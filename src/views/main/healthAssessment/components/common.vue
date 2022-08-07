@@ -1,0 +1,97 @@
+<template>
+  {{ activeUrl }}
+  <form-create
+    ref="cfrom"
+    v-model="fApi"
+    :rule="rule"
+    :option="option"
+  ></form-create>
+  <el-button @click="mySubmit" class="my-btn" type="primary">提交</el-button>
+  <!-- <el-button @click="atest">test</el-button> -->
+</template>
+
+<script setup>
+import { computed, inject, nextTick } from 'vue'
+import { getAllType, getHistroyData } from '@/api/healthAssessment/main'
+import { addHealthyAssess } from '@/api/healthAssessment/main.js'
+import { ref, defineProps, watch } from 'vue'
+import rules from './rules'
+import { ElMessage } from 'element-plus'
+
+const test = () => {
+  let index = filesArray.indexOf(props.activeUrl)
+  if (index > -1) return true
+}
+let filesArray = ['bone', 'BM', 'heart', 'blood', 'muscle']
+
+const props = defineProps({
+  pid: Number,
+  activeUrl: String,
+  type: String
+})
+
+watch(props.pid, (newVal, oldVal) => {
+  console.log(newVal)
+})
+
+const fApi = ref()
+
+const rule = ref([])
+
+const option = ref({
+  submitBtn: false,
+  resetBtn: true,
+  onSubmit: function (formData) {
+    formData.pid = props.pid
+    addHealthyAssess(activeUrl.value, formData).then((res) => {
+      console.log(res)
+    })
+  }
+})
+
+const cfrom = ref()
+const mySubmit = async () => {
+  let formData = JSON.parse(JSON.stringify(fApi.value))
+  formData.pid = props.pid
+  const res = await addHealthyAssess(props.activeUrl, formData)
+  if (res.success) {
+    ElMessage({
+      type: 'success',
+      message: '添加成功'
+    })
+  }
+}
+
+const setRule = () => {
+  console.log(props.activeUrl)
+  const url = props.activeUrl
+  // arule 为 rules 里面的对应的
+  const arule = rules.rules[`${url}`]['rule']
+  const aoption = rules.rules[`${url}`]['option']
+  if (url === 'bone' || url === 'BM') {
+    arule[0].props.data.pid = props.pid
+  }
+  if (arule != undefined) {
+    nextTick(() => {
+      rule.value = arule
+      option.value = aoption
+    })
+
+    console.log(aoption)
+  }
+}
+
+const setFromData = () => {}
+
+const atest = () => {}
+
+defineExpose({
+  setRule
+})
+</script>
+
+<style lang="scss" scoped>
+.my-btn {
+  margin-left: 130px;
+}
+</style>

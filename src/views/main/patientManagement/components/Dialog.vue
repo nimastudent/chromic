@@ -1,6 +1,7 @@
 <template>
   <el-dialog :model-value="dialogVisible" :title="title" @close="handleClose">
-    <el-form
+    <!-- 原表单页面 -->
+    <!-- <el-form
       :model="form"
       ref="vForm"
       :rules="rules"
@@ -225,7 +226,284 @@
           </tbody>
         </table>
       </div>
+    </el-form> -->
+
+
+
+
+
+    <!-- 修改的表单页面 -->
+    <el-form
+      :model="form"
+      ref="vForm"
+      :rules="rules"
+      label-position="left"
+      size="small"
+      @submit.prevent
+    >
+      <tr>
+        <td class="table-cell" rowspan="5" style="width: 2px !important"></td>
+
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">姓名</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item prop="name">
+            <el-input
+              type="text"
+              clearable
+              v-model="form.name"
+              maxlength="5"
+            ></el-input>
+          </el-form-item>
+        </td>
+
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">电话</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="telephone" class="required">
+            <el-input
+              v-model="form.telephone"
+              type="text"
+              clearable
+              maxlength="11"
+            ></el-input>
+          </el-form-item>
+        </td>
+        <td class="table-cell" rowspan="5" style="width: 2px !important"></td>
+      </tr>
+
+      <tr>
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">性别</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="sex">
+            <el-radio-group v-model="form.sex">
+              <el-radio
+                v-for="(item, index) in sexOptions"
+                :key="index"
+                :label="item.value"
+                :disabled="item.disabled"
+                style="
+                   {
+                    display: inline;
+                  }
+                "
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
+          </el-form-item>
+        </td>
+
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">出生日期</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="birthday">
+            <el-date-picker
+              v-model="form.birthday"
+              type="date"
+              format="YYYY/MM/DD"
+              value-format="YYYY-MM-DD"
+              :disabled-date="pickerOptions"
+              clearable
+            ></el-date-picker>
+          </el-form-item>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">身高(cm)</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="height">
+            <el-input
+              v-model="form.height"
+              type="text"
+              clearable
+              maxlength="3"
+            ></el-input>
+          </el-form-item>
+        </td>
+        
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">体重(kg)</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="weight">
+            <el-input
+              v-model="form.weight"
+              type="text"
+              clearable
+              maxlength="3"
+            ></el-input>
+          </el-form-item>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">机构</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="oid" class="required">
+            <el-select v-model="form.oid" class="full-width-input" clearable>
+              <el-option
+                v-for="(item, index) in orgList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </td>
+
+        <td class="table-cell">
+          <div class="static-content-item" v-if="role === 'admin'">
+            <div class="font">医生</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-select
+            v-if="role === 'admin'"
+            v-model="form.did"
+            class="full-width-input"
+            clearable
+          >
+            <el-option
+              v-for="(item, index) in docList"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+              :disabled="item.disabled"
+            ></el-option>
+          </el-select>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="table-cell" colspan="1">
+          <div class="static-content-item">
+            <div class="font">会员开始日期</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="startDate">
+            <el-date-picker
+              v-model="form.startDate"
+              type="date"
+              class="full-width-input"
+              format="YYYY/MM/DD"
+              value-format="YYYY-MM-DD"
+              clearable
+            ></el-date-picker>
+          </el-form-item>
+        </td>
+
+        <td class="table-cell">
+          <div class="static-content-item">
+            <div class="font">会员结束日期</div>
+          </div>
+        </td>
+        <td class="table-cell" colspan="4">
+          <el-form-item label="" prop="endDate">
+            <el-date-picker
+              v-model="form.endDate"
+              type="date"
+              class="full-width-input"
+              format="YYYY/MM/DD"
+              value-format="YYYY-MM-DD"
+              clearable
+            ></el-date-picker>
+          </el-form-item>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-cell" colspan="12" style="height: 2px !important"></td>
+      </tr>
     </el-form>
+    
+
+    <!-- 纯element Form表单 -->
+    
+    <!-- <el-form-item label="姓名">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <el-form-item label="电话">
+        <el-input v-model="form.telephone"></el-input>
+      </el-form-item> -->
+    <!-- <el-form-item label="性别">
+        <el-radio-group v-model="form.sex">
+          <el-radio
+            v-for="(item, ibdex) in sexOptions"
+            :key="index"
+            :label="item.value"
+            style="display: inline"
+            >{{ item.value }}</el-radio
+          >
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="出生日期">
+        <el-col :span="11">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="form.birthday"
+            style="width: 100%"
+          ></el-date-picker>
+        </el-col>
+      </el-form-item>
+      <el-form-item label="身高">
+        <el-input v-model="form.height"></el-input>
+      </el-form-item>
+      <el-form-item label="体重">
+        <el-input v-model="form.weight"></el-input>
+      </el-form-item>
+      <el-form-item label="机构">
+        <el-select v-model="form.oid" placeholder="请选择">
+          <el-option label="无数据" value="shanghai"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="会员开始日期">
+        <el-col :span="11">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="form.startDate"
+            style="width: 100%"
+          ></el-date-picker>
+        </el-col>
+      </el-form-item>
+      <el-form-item label="会员结束日期">
+        <el-col :span="11">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="form.endDate"
+            style="width: 100%"
+          ></el-date-picker>
+        </el-col>
+      </el-form-item>
+    </el-form> -->
+
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleReset('edit')">清空表单</el-button>

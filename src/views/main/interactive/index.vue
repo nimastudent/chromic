@@ -7,7 +7,7 @@
     </div>
     <div class="chatbox">
       <message></message>
-      <!-- <v-text></v-text> -->
+      <my-text></my-text>
     </div>
   </div>
 </template>
@@ -16,13 +16,15 @@
 import search from './components/search.vue'
 import chatlist from './components/chatList.vue'
 import message from './components/message.vue'
+import myText from './components/text.vue'
 import { getChatList } from '@/api/chat/chat'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     search,
     chatlist,
-    message
+    message,
+    myText
   },
   mounted() {
     this.$store.dispatch('chat/fetchChatList')

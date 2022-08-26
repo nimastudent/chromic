@@ -7,7 +7,7 @@
         :key="index"
         @click="handleSelect(item)"
         class="sessionlist"
-        :class="{ active: item.toUid === aId }"
+        :class="{ active: item.toUid === aId, isOnline: item.isOnline }"
       >
         <div class="list-left">
           <img
@@ -22,11 +22,11 @@
             " -->
         </div>
         <div class="list-right">
+          <div class="dot"></div>
           <div class="name">{{ item.name }}</div>
-          <span class="time">{{ 123123 }}</span>
+          <span class="time">{{ aId }}</span>
           <p class="lastmsg">
-            <!-- {{ item.latestMessage }} -->
-            wonima12312312312312313
+            {{ item.latestMessage }}
           </p>
         </div>
       </li>
@@ -56,9 +56,8 @@ export default {
   },
   methods: {
     handleSelect(item) {
-      // console.log(id)
       this.$store.dispatch('chat/selectSession', item)
-      this.aId = item.id
+      this.aId = item.toUid
     }
   }
 }
@@ -66,8 +65,11 @@ export default {
 
 <style lang="scss" scoped>
 .msglist {
-  height: 70vh;
+  height: 60vh;
   overflow-y: auto;
+}
+.isOnline {
+  background-color: rgb(10, 219, 150);
 }
 
 .ul {
@@ -112,6 +114,7 @@ export default {
   color: #999;
   font-size: 10px;
   vertical-align: top;
+  margin-top: 10px;
 }
 
 .lastmsg {
@@ -125,5 +128,13 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.dot {
+  float: right;
+  background-color: red;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
 </style>

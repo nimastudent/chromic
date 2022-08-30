@@ -2,7 +2,7 @@
   <el-card :body-style="{ padding: '5px 10px' }">
     <el-row :gutter="24" style="margin: 5px 0">
       <el-row :span="4">
-        <el-button type="primary" @click="handleCreate">新增指导</el-button>
+        <el-button type="primary" @click="handleCreate">新增推荐</el-button>
       </el-row>
       <el-row :span="1" class="patient-name-contianer"> 患者姓名： </el-row>
       <el-row :span="7">
@@ -33,6 +33,7 @@
       >
         <template v-if="item.prop === 'action'" v-slot="{ row }">
           <!-- <el-button @click="handelEdit(row)">编辑</el-button> -->
+          <el-button @click="handleClickCheck(row)">查看</el-button>
           <el-button @click="handleDelete(row)" type="danger"> 删除</el-button>
         </template>
         <template v-else-if="item.prop === 'isDrug'" v-slot="{ row }">
@@ -64,15 +65,11 @@
 import Pagination from '@/components/pagination/index.vue'
 import { addItem, options } from './options'
 
-import {
-  getFoodListForDoc,
-  getFoodListForAdm,
-  getAllDocList,
-  deleteZhiDao
-} from '@/api/foodManagement/food.js'
+import { getAllDocList, deleteZhiDao } from '@/api/foodManagement/food.js'
 import {
   getDrugListForDoc,
-  getDrugListForAdm
+  getDrugListForAdm,
+  getDrugGuideById
 } from '@/api/foodManagement/drug.js'
 import { getHeightWithOutHeader } from '@/utils/params/height'
 import { ref } from 'vue'
@@ -104,6 +101,7 @@ const getList = () => {
   }
 }
 
+// 医生获取
 const getListForDoc = async () => {
   const res = await getDrugListForDoc(queryForm.value)
   if (res.success) {
@@ -114,6 +112,7 @@ const getListForDoc = async () => {
   }
 }
 
+// 管理员获取
 const getListForAdm = async () => {
   const res = await getDrugListForAdm(queryForm.value)
   if (res.success) {
@@ -138,6 +137,15 @@ const doctorId = ref(0)
 if (role === 'staff') {
   console.log('is staff')
   doctorId.value = parseInt(sessionStorage.getItem('doctorId'))
+}
+
+// 处理单击查看
+const handleClickCheck = async (row) => {
+  console.log(row.id)
+  const res = await getDrugGuideById({ id: row.id })
+  if (res) {
+    console.log(res)
+  }
 }
 
 // 新增指导

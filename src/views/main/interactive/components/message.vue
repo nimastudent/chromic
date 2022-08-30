@@ -11,14 +11,14 @@
           class="message-item"
         >
           <div class="time">
-            <span>19:90</span>
+            <span>{{ dateFilter(item.time) }}</span>
           </div>
           <div class="main" :class="{ self: item.self }">
             <img
               class="avatar"
               width="36"
               height="36"
-              :src="item.avator ? item.avator : '../components/emptyUser.png'"
+              :src="item.avator ? item.avator : '@/assets/emptylUser.png'"
             />
             <!-- :src="item.self ? user.img : selectedChat.img" -->
             <div class="content">
@@ -47,8 +47,8 @@ export default {
   mounted() {
     //  在页面加载时让信息滚动到最下面
     setTimeout(
-      () => (this.$refs.list.scrollTop = this.$refs.list.scrollHeight),
-      0
+      () => (this.$refs.list.scrollTop = this.$refs['list'].scrollHeight),
+      10
     )
   },
   watch: {
@@ -56,7 +56,13 @@ export default {
     messages() {
       setTimeout(
         () => (this.$refs.list.scrollTop = this.$refs.list.scrollHeight),
-        0
+        10
+      )
+    },
+    selectedChat() {
+      setTimeout(
+        () => (this.$refs.list.scrollTop = this.$refs.list.scrollHeight),
+        10
       )
     }
   },
@@ -64,19 +70,22 @@ export default {
     //  在发送信息之后，将输入的内容中属于表情的部分替换成emoji图片标签
     //  再经过v-html 渲染成真正的图片
     replaceFace(con) {
-      if (con.includes('/:')) {
-        var emojis = this.emojis
-        for (var i = 0; i < emojis.length; i++) {
-          con = con.replace(
-            emojis[i].reg,
-            '<img src="static/emoji/' +
-              emojis[i].file +
-              '"  alt="" style="vertical-align: middle; width: 24px; height: 24px" />'
-          )
-        }
-        return con
-      }
+      // if (con.includes('/:')) {
+      //   var emojis = this.emojis
+      //   for (var i = 0; i < emojis.length; i++) {
+      //     con = con.replace(
+      //       emojis[i].reg,
+      //       '<img src="static/emoji/' +
+      //         emojis[i].file +
+      //         '"  alt="" style="vertical-align: middle; width: 24px; height: 24px" />'
+      //     )
+      //   }
+      //   return con
+      // }
       return con
+    },
+    dateFilter(date) {
+      return date.slice(5, date.length)
     }
   }
   //   filters: {
@@ -98,7 +107,8 @@ export default {
 <style lang="scss" scoped>
 .message {
   width: 100%;
-  height: 70vh;
+  height: 47vh;
+  min-height: 400px;
 }
 
 .header {

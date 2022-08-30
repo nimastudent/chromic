@@ -58,7 +58,6 @@ const actions = {
   loginOut({ commit }) {
     return new Promise((resolve, reject) => {
       logout().then((res) => {
-        console.log(res)
         sessionStorage.setItem('cookie', '')
         resolve(res)
       })

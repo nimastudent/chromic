@@ -23,6 +23,17 @@ export default ({ command }) => {
         }
       }
     },
-    plugins: [vue()]
+    plugins: [vue()],
+    server: {
+      proxy: {
+        '/api': {
+          // 后台地址
+          target: 'https://www.aikeyunkang.top:8081/',
+          changeOrigin: true,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    }
   }
 }

@@ -55,7 +55,15 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref, defineProps, defineEmits, watch, reactive, nextTick } from 'vue'
+import {
+  ref,
+  defineProps,
+  defineEmits,
+  watch,
+  reactive,
+  nextTick,
+  defineExpose
+} from 'vue'
 import Editor from '@/components/editor/index.vue'
 import { addAction, updateAction } from '@/api/sportManagement/action'
 import {
@@ -83,10 +91,8 @@ const emits = defineEmits(['update:dialogVisible', 'updateList'])
 watch(
   () => prop.dialogVisible,
   (newVal, oldVal) => {
-    console.log(prop)
     if (newVal) {
       getPatient(prop.doctorId)
-      
     }
     if (prop.dialogStatus === 'add') {
       resetForm()
@@ -98,7 +104,6 @@ watch(
 )
 
 const editorStatus = 'food'
-
 const title = ref('')
 const form = reactive({})
 
@@ -110,8 +115,6 @@ watch(
     } else {
       patientList.value = []
       form.pid = ''
-      console.log(form.pid)
-      console.log(form)
     }
   }
 )
@@ -128,12 +131,16 @@ const getMsg = (msg) => {
 }
 
 const formRef = ref()
+// 提交方法
 const submit = () => {
+  // 表单校验
   formRef.value.validate(async (valid) => {
     if (!valid) return
+    // 新增
     if (prop.dialogStatus === 'add') {
       form.date = getToday()
       createZhiDao()
+      // 更新
     } else if (prop.dialogStatus === 'edit') {
       updateChuFang()
     }
@@ -152,8 +159,9 @@ const getPatient = async (did) => {
   }
 }
 
-// 新增方法
+// 新增指导方法
 const createZhiDao = async () => {
+  // 管理员操作
   if (prop.role === 'admin') {
     const res = await addZhiDaoforAdmi(form)
     if (res.success) {
@@ -169,6 +177,7 @@ const createZhiDao = async () => {
         message: res.body
       })
     }
+    // 医生操作
   } else if (prop.role === 'staff') {
     const res = await addZhiDaoForDoc(form)
     if (res.success) {
@@ -237,18 +246,29 @@ const resetForm = () => {
 
 // 编辑设置数据
 const setData = (data) => {
-  form.type = data.type
-  form.name = data.name
-  form.content = data.content
+  form.date = data.date
+  form.patientName = data.patientName
+  form.doctorName = data.doctorName
+  form.title = data.title
   form.id = data.id
+
   nextTick(() => {
     wangEditorRef.value.setData(data.content)
   })
+}
+
+// 根据患者姓名查找对应 id
+const findPid =(patientName) => {
+  
 }
 
 // 处理关闭
 const handleClose = () => {
   emits('update:dialogVisible', false)
 }
+
+defineExpose({
+  setData
+})
 </script>
 <style lang="scss" scoped></style>

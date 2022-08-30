@@ -5,7 +5,8 @@ const baseURL = import.meta.env.VITE_BASE_URL
 
 const service = axios.create({
   baseURL: baseURL,
-  timeout: 5000
+  timeout: 5000,
+  withCredentials: true
 })
 
 // 请求前的统一处理
@@ -33,10 +34,14 @@ service.interceptors.response.use(
       return Promise.reject(res)
     }
   },
-  (error)=> {
+  (error) => {
     console.log(error) // for debug
     const badMessage = error.message || error
-    const code = parseInt(badMessage.toString().replace('Error: Request failed with status code ', ''))
+    const code = parseInt(
+      badMessage
+        .toString()
+        .replace('Error: Request failed with status code ', '')
+    )
     showError({ code, message: badMessage })
     return Promise.reject(error)
   }
@@ -55,9 +60,6 @@ function showError(error) {
   }
 }
 
-
 // 节流
-const throttle = (func,wait) => {
-
-}
+const throttle = (func, wait) => {}
 export default service

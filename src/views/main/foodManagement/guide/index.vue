@@ -32,7 +32,7 @@
         :width="item.width"
       >
         <template v-if="item.prop === 'action'" v-slot="{ row }">
-          <!-- <el-button @click="handelEdit(row)">编辑</el-button> -->
+          <el-button @click="handelEdit(row)">编辑</el-button>
           <el-button @click="handleDelete(row)" type="danger"> 删除</el-button>
         </template>
         <template v-else-if="item.prop === 'isDrug'" v-slot="{ row }">
@@ -51,6 +51,7 @@
   </el-card>
 
   <food-dialog
+    ref="FoodDialog"
     v-model:dialogVisible="dialogVisible"
     :doctorId="doctorId"
     :role="role"
@@ -68,10 +69,11 @@ import {
   getFoodListForDoc,
   getFoodListForAdm,
   getAllDocList,
-  deleteZhiDao
+  deleteZhiDao,
+  getFoodById
 } from '@/api/foodManagement/food.js'
 import { getHeightWithOutHeader } from '@/utils/params/height'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import { addItem, options } from './options'
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -144,11 +146,18 @@ const handleCreate = () => {
   dialogVisible.value = true
 }
 
+const FoodDialog = ref()
 // 编辑指导
 const editData = ref()
 const handelEdit = (row) => {
   dialogStatus.value = 'edit'
-  dialogVisible.value = true
+  // console.log(FoodDialog.value)
+  getFoodById({ id: row.id }).then((res) => {
+    nextTick(() => {
+      FoodDialog.value.setData(res.body)
+    })
+    dialogVisible.value = true
+  })
 }
 
 // 删除
@@ -179,6 +188,7 @@ if (role === 'admin') {
   getDocList()
 }
 </script>
+
 <style lang="scss" scoped>
 .patient-name-contianer {
   margin-left: 30px;

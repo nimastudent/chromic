@@ -39,6 +39,7 @@
           @click="submit"
           style="width: 100%"
           size="medium"
+          v-debounce
           >登录</el-button
         >
       </el-form>

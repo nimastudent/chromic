@@ -26,6 +26,9 @@ export default {
     message,
     myText
   },
+  created() {
+    this.$store.dispatch('chat/init')
+  },
   mounted() {
     this.$store.dispatch('chat/fetchChatList')
     // mapActions(['chat/fetchChatList'])
@@ -36,7 +39,7 @@ export default {
       const res = await getChatList()
       if (res.success) {
       }
-    }
+    },
   }
 }
 </script>

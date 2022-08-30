@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
-const baseURL = 'https://www.aikeyunkang.top:8081'
+// https://www.aikeyunkang.top:8081
+const baseURL = '/api'
 
 const service = axios.create({
   baseURL,
@@ -30,17 +31,18 @@ service.interceptors.request.use(async (config) => {
 service.interceptors.response.use(
   (response) => {
     const res = response.data
-    if (res.code === 200) {
-      // console.log(res);
-      return res
-    } else {
-      ElMessage({
-        message: res.body,
-        type: 'error',
-        duration: 3 * 1000
-      })
-      return Promise.reject(res)
-    }
+    return res
+    // if (res.code === 200) {
+    //   // console.log(res);
+    //   return res
+    // } else {
+    //   ElMessage({
+    //     message: res.body,
+    //     type: 'error',
+    //     duration: 3 * 1000
+    //   })
+    //   return Promise.reject(res)
+    // }
   },
   (error) => {
     console.log(error)

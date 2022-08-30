@@ -3,24 +3,31 @@
 
   <div>
     <button @click="webScoketConnTest">testconne</button>
+    <button @click="sendData">send msg</button>
   </div>
 </template>
 
 <script setup>
-import { error } from 'console'
+// import { reactive } from 'vue'
+// import SocketService from '@/utils/system/global.js'
+// const data = reactive({
+//   socketServe: SocketService.Instance
+// })
+// SocketService.Instance.connect()
+// data.socketServe = SocketService.Instance
+// data.socketServe.registerCallBack('callback1', data.socketServe)
 
-const webScoketConnTest = () => {
-  const wb = new WebSocket('wss://www.aikeyunkang.top:8081/websocket/server/1')
-  wb.onopen = () => {
-    console.log('opne')
-  }
-  wb.onerror = (error) => {
-    console.log('error', error)
-  }
-  wb.onclose = () => {
-    console.log('close')
-  }
-}
+// const sendData = () => {
+//   const obj = {
+//     uid: 1,
+//     toUid: 3,
+//     type: 'text',
+//     content: '今天天气不错',
+//     time: '2022-08-28 12:16:00',
+//     role: 'doctor'
+//   }
+//   data.socketServe.send(obj)
+// }
 </script>
 
 <style lang="scss" scoped>

@@ -19,3 +19,12 @@ export function getDrugListForAdm(params) {
     params
   })
 }
+
+// 根据id获取药物指导
+export function getDrugGuideById(params) {
+  return request({
+    url: '/drug/manage/getById',
+    method: 'get',
+    params
+  })
+}

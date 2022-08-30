@@ -67,7 +67,6 @@ export default {
     // 单击发送按钮发送信息
     send() {
       this.warn = true
-
       if (this.content.length <= 1) {
         this.warn = true
         this.content = ''
@@ -75,6 +74,7 @@ export default {
           this.warn = false
         }, 1000)
       } else {
+        this.$store.dispatch('chat/sendMsg', this.content)
       }
     }
   }

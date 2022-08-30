@@ -47,8 +47,8 @@ export default {
   mounted() {
     //  在页面加载时让信息滚动到最下面
     setTimeout(
-      () => (this.$refs.list.scrollTop = this.$refs.list.scrollHeight),
-      0
+      () => (this.$refs.list.scrollTop = this.$refs['list'].scrollHeight),
+      10
     )
   },
   watch: {
@@ -56,7 +56,13 @@ export default {
     messages() {
       setTimeout(
         () => (this.$refs.list.scrollTop = this.$refs.list.scrollHeight),
-        0
+        10
+      )
+    },
+    selectedChat() {
+      setTimeout(
+        () => (this.$refs.list.scrollTop = this.$refs.list.scrollHeight),
+        10
       )
     }
   },

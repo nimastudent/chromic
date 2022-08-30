@@ -1,9 +1,7 @@
 <template>
   <el-card :body-style="{ padding: '5px 10px' }">
     <el-row :gutter="24" style="margin: 5px 0">
-      <el-row :span="4">
-        <el-button type="primary" @click="handleCreate">新增指导</el-button>
-      </el-row>
+      <el-row :span="4"> </el-row>
       <el-row :span="1" class="patient-name-contianer"> 患者姓名： </el-row>
       <el-row :span="7">
         <el-input v-model="queryForm.patientName" clearable></el-input>
@@ -86,4 +84,12 @@ const getListForAdm = async () => {
 
 getList()
 </script>
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+.patient-name-contianer {
+  margin-left: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

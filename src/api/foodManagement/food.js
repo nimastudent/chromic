@@ -21,6 +21,15 @@ export function getFoodListForAdm(params) {
   })
 }
 
+// 根据id获取饮食指导
+export function getFoodById(params) {
+  return request({
+    url: 'food/manage/getById',
+    method: 'get',
+    params
+  })
+}
+
 // 返回所有医生的id、account、name、oid、organizationName（下拉框）
 export function getAllDocList() {
   return request({

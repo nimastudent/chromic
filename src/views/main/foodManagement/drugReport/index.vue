@@ -4,7 +4,7 @@
       <el-row :span="4">
         <el-button type="primary" @click="handleCreate">新增指导</el-button>
       </el-row>
-      <el-row :span="1" class="patient-name-contianer"> 患者姓名： </el-row>
+      <el-col :span="1"> 患者姓名： </el-col>
       <el-row :span="7">
         <el-input v-model="queryForm.patientName" clearable></el-input>
       </el-row>
@@ -183,6 +183,7 @@ if (role === 'admin') {
   getDocList()
 }
 </script>
+
 <style lang="scss" scoped>
 .patient-name-contianer {
   margin-left: 30px;

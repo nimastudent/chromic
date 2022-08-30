@@ -66,3 +66,47 @@ export function deleteAction(params) {
     params
   })
 }
+
+
+
+
+
+
+
+
+
+// 返回所有类型
+export function getAllActionType(params){
+  return request({
+    url:'/action/type/manage/all',
+    method: 'get',
+    params
+  })
+}
+
+// 新增动作类型
+export function insertActionType(data){
+  return request({
+    url:'/action/type/manage/insert',
+    method:'post',
+    data
+  })
+}
+
+// 更新动作类型
+export function updateActionType(data){
+  return request({
+    url:'/action/type/manage/update',
+    method:'post',
+    data
+  })
+}
+
+// 删除动作类型
+export function deleteActionType(params){
+  return request({
+    url:'/action/type/manage/delete',
+    method:'get',
+    params
+  })
+}

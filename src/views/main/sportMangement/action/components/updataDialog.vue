@@ -1,21 +1,11 @@
 <template>
-  <el-dialog
-    :model-value="dialogVisible"
-    :title="title"
-    @close="handleClose"
-    width="60vw"
-  >
+  <el-dialog :model-value="dialogVisible" :title="title" @close="handleClose" width="60vw">
     <el-form ref="formRef" :model="form" :rules="rules">
       <el-row :gutter="24">
         <el-col :span="11">
           <el-form-item label="动作类型：" prop="type">
             <el-select placeholder="请选择" clearable v-model="form.type">
-              <el-option
-                v-for="(item, index) in list"
-                :key="index"
-                :label="item.value"
-                :value="item.value"
-              >
+              <el-option v-for="(item, index) in list" :key="index" :label="item.value" :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -39,6 +29,7 @@ import { addAction, updateAction } from '@/api/sportManagement/action'
 import { getToday } from '@/utils/params/date'
 import { ElMessage } from 'element-plus'
 
+// 这个是组件传参  你要看下 都对应的什么
 const prop = defineProps({
   dialogVisible: Boolean,
   actionTypeOptions: Array,

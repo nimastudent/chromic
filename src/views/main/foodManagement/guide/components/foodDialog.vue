@@ -79,7 +79,6 @@ import { ElMessage } from 'element-plus'
 const prop = defineProps({
   dialogVisible: Boolean,
   dialogStatus: String,
-  doctorId: Number,
   role: String,
   docList: Array,
   editData: Object
@@ -91,9 +90,6 @@ const emits = defineEmits(['update:dialogVisible', 'updateList'])
 watch(
   () => prop.dialogVisible,
   (newVal, oldVal) => {
-    if (newVal) {
-      getPatient(prop.doctorId)
-    }
     if (prop.dialogStatus === 'add') {
       resetForm()
       title.value = '新增指导'
@@ -106,18 +102,6 @@ watch(
 const editorStatus = 'food'
 const title = ref('')
 const form = reactive({})
-
-watch(
-  () => form.did,
-  (newVal) => {
-    if (newVal) {
-      getPatient(newVal)
-    } else {
-      patientList.value = []
-      form.pid = ''
-    }
-  }
-)
 
 const rules = reactive({
   did: [{ required: true, message: '字段值不可为空' }],
@@ -247,7 +231,7 @@ const resetForm = () => {
 // 编辑设置数据
 const setData = (data) => {
   form.date = data.date
-  form.patientName = data.patientName
+  form.pid = data.pid
   form.doctorName = data.doctorName
   form.title = data.title
   form.id = data.id
@@ -255,11 +239,13 @@ const setData = (data) => {
   nextTick(() => {
     wangEditorRef.value.setData(data.content)
   })
+  console.log(form)
 }
 
 // 根据患者姓名查找对应 id
-const findPid =(patientName) => {
-  
+const findPid = (patientName) => {
+  const list = JSON.parse(JSON.stringify(patientList))
+  console.log('patientList', patientList)
 }
 
 // 处理关闭
@@ -268,7 +254,8 @@ const handleClose = () => {
 }
 
 defineExpose({
-  setData
+  setData,
+  getPatient
 })
 </script>
 <style lang="scss" scoped></style>

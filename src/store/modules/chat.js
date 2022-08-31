@@ -7,7 +7,7 @@ const state = () => ({
   selectName: '',
   selectChat: [],
   chatList: [],
-  scoketService: SocketService.Instance
+  scoketService: SocketService.Instance,
 })
 
 // getters
@@ -48,14 +48,14 @@ const actions = {
   // 发送信息
   sendMsg(context, msg) {
     const obj = {
-      uid: sessionStorage.getItem('doctorId'),
-      toUid: context.state.selectId,
+      uid: parseInt(sessionStorage.getItem('doctorId')),
+      toUid: parseInt(context.state.selectId),
       time: getNowTime(),
       type: 'text',
       content: msg,
       role: 'doctor'
     }
-    // context.state.scoketService.send(msg)
+    context.state.scoketService.send(obj)
   },
   closeConn({ state }) {
     SocketService.Instance.close()

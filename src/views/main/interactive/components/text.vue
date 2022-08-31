@@ -20,9 +20,9 @@
   </div>
 </template>
 
-<script>
-import { mapGetters, mapState } from 'vuex'
 
+
+<script>
 export default {
   data() {
     return {
@@ -32,17 +32,23 @@ export default {
     }
   },
   computed: {
-    ...mapState(['chat/selectId'])
+    selectId() {
+      return this.$store.getters['chat/selectId']
+    }
   },
   mounted() {
     this.$refs.text.focus()
   },
   watch: {
     // 在选择其它对话的时候 聚焦输入框
-    selectId() {
-      setTimeout(() => {
-        this.$refs.text.focus()
-      }, 0)
+    selectId: {
+      handler(newValue, oldValue) {
+        console.log(newValue)
+        setTimeout(() => {
+          this.$refs.text.focus()
+        }, 0)
+      },
+      deep: true
     },
     // 当输入框中的值为空时 弹出提示  并在一秒后消失
     content() {
@@ -66,6 +72,7 @@ export default {
     },
     // 单击发送按钮发送信息
     send() {
+      console.log(this)
       this.warn = true
       if (this.content.length <= 1) {
         this.warn = true

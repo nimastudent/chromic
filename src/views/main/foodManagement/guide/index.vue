@@ -78,10 +78,10 @@ import { useStore } from 'vuex'
 import { addItem, options } from './options'
 import { ElMessageBox, ElMessage } from 'element-plus'
 
-const store = useStore()
-const role = store.state.user.role
-// const role = 'admin'
-console.log(role)
+// const store = useStore()
+// const role = store.state.user.role
+const role = 'staff'
+// console.log(role)
 const cardHeight = getHeightWithOutHeader()
 
 const total = ref(0)
@@ -154,6 +154,8 @@ const handelEdit = (row) => {
   // console.log(FoodDialog.value)
   getFoodById({ id: row.id }).then((res) => {
     nextTick(() => {
+      FoodDialog.value.getPatient(doctorId.value)
+
       FoodDialog.value.setData(res.body)
     })
     dialogVisible.value = true

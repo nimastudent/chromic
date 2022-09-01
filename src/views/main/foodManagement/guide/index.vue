@@ -138,15 +138,18 @@ if (role === 'staff') {
   doctorId.value = parseInt(sessionStorage.getItem('doctorId'))
 }
 
+const FoodDialog = ref()
+
 // 新增指导
 const dialogStatus = ref('')
 const dialogVisible = ref(false)
 const handleCreate = () => {
+  FoodDialog.value.getPatient(doctorId.value)
+
   dialogStatus.value = 'add'
   dialogVisible.value = true
 }
 
-const FoodDialog = ref()
 // 编辑指导
 const editData = ref()
 const handelEdit = (row) => {

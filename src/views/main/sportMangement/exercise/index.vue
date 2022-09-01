@@ -31,8 +31,8 @@
       >
         <template v-slot="{ row }" v-if="item.prop === 'action'">
           <el-button @click="handleHuiBao(row)">查看处方</el-button>
-        </template></el-table-column
-      >
+        </template>
+      </el-table-column>
     </el-table>
     <Pagination
       :total="total"

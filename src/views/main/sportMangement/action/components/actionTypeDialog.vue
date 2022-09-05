@@ -3,7 +3,8 @@
     <el-row :gutter="20">
       <el-col :span="4" :offset="20">
         <div class="addbutton">
-          <el-button type="primary" @click="handleAddActionType">新增</el-button>
+          <!-- 加 （） 不带值 -->
+          <el-button type="primary" @click="handleAddActionType()">新增</el-button>
         </div>
       </el-col>
     </el-row>
@@ -14,10 +15,12 @@
       <el-table-column :width="item.width" :prop="item.prop" :label="item.label"
         v-for="(item, index) in actiontypedialogoptions" :key="index">
 
-        <template #default="{row}" v-if="item.prop === 'action'">
+        <!-- 结构出 row ，再将row传过去 -->
+        <template #default="{ row }" v-if="item.prop === 'action'">
           <!-- <el-button type="primary">新增</el-button> -->
-          <el-button type="warning" @click="update(row)">更新</el-button>
-          <el-button type="danger">删除</el-button>
+          <!-- <el-button type="warning" @click="update(row)">更新</el-button> -->
+          <el-button type="warning" @click="handleAddActionType(row)">更新</el-button>
+          <el-button type="danger" @click="deleteAddActionType(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -33,17 +36,22 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleActionTypeDialogClose">取消</el-button>
-        <el-button type="primary" @click="dialogVisible2 = false">确认</el-button>
+        <!-- <el-button type="primary" @click="dialogVisible2 = false">确认</el-button> -->
+        <el-button type="primary" @click="handleActionTypeDialogClose">确认</el-button>
+
       </span>
     </template>
   </el-dialog>
-
-  <ad-ac-type-dialog v-model="addActionTypeDialog" v-if="addActionTypeDialog" @initList="initgetAllActionTypeList" :titleValue="titleValue" />
+  <!-- v-model="addActionTypeDialog"绑定是否展示对话框 -->
+  <!-- v-if="addActionTypeDialog" 每次新增弹出对话框都是新的值（对话框全部置空） -->
+  <!-- :dialogTitle="dialogTitle" 将 dialogTitle的值传过去 -->
+  <ad-ac-type-dialog v-model:actionTypeDialogVisible="addActionTypeDialog" @initList="initgetAllActionTypeList"
+    :dialogTitle="dialogTitle" :dialogTableValue="dialogTableValueStatus" />
 </template>
 
 <script setup>
 import { ref, defineEmits } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import { getHeightWithOutHeader } from '@/utils/params/height'
 import { actiontypedialogoptions } from './actiontypedialogoptions.js'
 import {
@@ -52,13 +60,17 @@ import {
   updateActionType,
   deleteActionType
 } from '@/api/sportManagement/action.js'
-import adAcTypeDialog from './components/addActionTypeDialog.vue'
-import {isNull} from '@/utils/filters'
+import adAcTypeDialog from './components/addActionTypeDialog.vue'  // 导入子组件
+import { isNull } from '@/utils/filters'
 
 
+const tableData = ref([])
 const total = ref(0)
-const titleValue = ref({})
+const dialogTitle = ref('')   // 定义标题
+const addActionTypeDialog = ref(false)    // 初始化对话框（是否展示）
+const dialogTableValueStatus = ref({})      // 定义表单时（用于判断表单获取过来的数据是否为空，之后进行判断执行新增还是更新操作），新增 或 更新
 
+// defineProps在父组件（）
 const prop = defineProps({
   dialogVisible: Boolean
 })
@@ -68,29 +80,30 @@ const queryForm = ref({
   pageSize: 10
 })
 
-const addActionTypeDialog = ref(false)    // 初始化对话框（是否展示）
 
-// 你这个 dialog  已经可以 正常 使用了 下一步 就是把 获取数据 表格显示出来 就可以了
 const emits = defineEmits(['update:dialogVisible'])
 
 const handleActionTypeDialogClose = () => {
-  emits('update:dialogVisible', false)
+  emits('update:dialogVisible', false)    // 更新 dialogVisible 为 false
 }
 
+// 更新数据（重新获取数据刷新）
 const initgetAllActionTypeList = async () => {
   const res = await getAllActionType(queryForm.value)
   console.log(res)
   tableData.value = res.body
 }
 
-const update = (row) => {
-  console.log('更新');
-  if (!isNull(row)){
-    // 更新操作
-    titleValue.value = JSON.parse(JSON.stringify(row))
 
-  }
-}
+//#region 
+// const update = (row) => {
+//   console.log('更新');
+//   if (!isNull(row)){
+//     // 更新操作
+//     title.value = JSON.parse(JSON.stringify(row))
+
+//   }
+// }
 
 // const getList = async () => {
 //   const res = await getAllActionType(queryForm.value)
@@ -111,12 +124,50 @@ const update = (row) => {
 //       // catch error
 //     })
 // }
+//#endregion
 
-const handleAddActionType = () => {
-  addActionTypeDialog.value = true
+
+// 新增、更新
+const handleAddActionType = (row) => {
+  if (isNull(row)) {
+    dialogTitle.value = '添加'   // 空值为 添加用户
+    dialogTableValueStatus.value = {}
+  } else {
+    dialogTitle.value = '更新'
+    dialogTableValueStatus.value = JSON.parse(JSON.stringify(row))    // 深拷贝，拷贝一份相同的数据进行编辑
+  }
+  addActionTypeDialog.value = true   // 显示对话框
 }
 
-const tableData = ref([])
+// 删除
+const deleteAddActionType = (row) => {
+  console.log(row);   // 一个 Proxy 对象
+
+  ElMessageBox.confirm(
+    '确认删除？',
+    '删除警告',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      await deleteActionType({ id: row.id })     // 加 {key : value}
+      ElMessage({
+        type: 'success',
+        message: '删除成功',
+      })
+      initgetAllActionTypeList()
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除',
+      })
+    })
+}
+
 
 initgetAllActionTypeList()
 // getList()

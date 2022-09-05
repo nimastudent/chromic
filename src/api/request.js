@@ -2,13 +2,13 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 // https://www.aikeyunkang.top:8081
-// const baseURL = '/api'
-const baseURL = 'https://www.aikeyunkang.top:8081'
+const baseURL = '/api'
+// const baseURL = 'https://www.aikeyunkang.top:8081'
 
 const service = axios.create({
   baseURL,
   timeout: 5000
-}) 
+})
 
 const requsetQueue = []
 

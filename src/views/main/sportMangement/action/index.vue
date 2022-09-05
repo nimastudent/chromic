@@ -18,7 +18,7 @@
         <el-button type="primary" @click="getList" style="margin-left: 10px">搜索</el-button>
       </el-row>
     </el-row>
-    <el-table v-loading="loading" :data="tableData" stripe :border="true" :height="cardHeight" highlight-current-row
+    <el-table  v-loading="loading" :data="tableData" stripe :border="true" :height="cardHeight" highlight-current-row
       @current-change="handleCurrentChange" style="font-size: 1rem">
       <el-table-column v-for="(item, index) in options" :key="index" :prop="item.prop" :label="item.label"
         :width="item.width">

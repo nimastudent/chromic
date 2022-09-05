@@ -67,16 +67,11 @@ export function deleteAction(params) {
   })
 }
 
-
-
-
-
-
-
+// ===========================================================
 
 
 // 返回所有类型
-export function getAllActionType(params){
+export const getAllActionType = (params) => {
   return request({
     url:'/action/type/manage/all',
     method: 'get',
@@ -85,7 +80,7 @@ export function getAllActionType(params){
 }
 
 // 新增动作类型
-export function insertActionType(data){
+export const insertActionType = (data) =>{
   return request({
     url:'/action/type/manage/insert',
     method:'post',

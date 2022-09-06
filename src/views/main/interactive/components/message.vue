@@ -22,7 +22,12 @@
             />
             <!-- :src="item.self ? user.img : selectedChat.img" -->
             <div class="content">
-              <div class="text" v-html="replaceFace(item.content)"></div>
+              <el-image
+                v-if="item.type === null"
+                :src="item.content"
+                :fit="'fill'"
+              />
+              <div v-else class="text" v-html="replaceFace(item.content)"></div>
             </div>
           </div>
         </li>

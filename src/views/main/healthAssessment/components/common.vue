@@ -1,13 +1,15 @@
 <template>
-  {{ activeUrl }}
-  <form-create
-    ref="cfrom"
-    v-model="fApi"
-    :rule="rule"
-    :option="option"
-  ></form-create>
-  <el-button @click="mySubmit" class="my-btn" type="primary">提交</el-button>
-  <!-- <el-button @click="atest">test</el-button> -->
+  <div class="common-cotianer">
+    {{ activeUrl }}
+    <form-create
+      ref="cfrom"
+      v-model="fApi"
+      :rule="rule"
+      :option="option"
+    ></form-create>
+    <el-button @click="mySubmit" class="my-btn" type="primary">提交</el-button>
+    <el-button @click="atest">test</el-button>
+  </div>
 </template>
 
 <script setup>
@@ -18,10 +20,7 @@ import { ref, defineProps, watch } from 'vue'
 import rules from './rules'
 import { ElMessage } from 'element-plus'
 
-const test = () => {
-  let index = filesArray.indexOf(props.activeUrl)
-  if (index > -1) return true
-}
+// 使用form-create 的组件
 let filesArray = ['bone', 'BM', 'heart', 'blood', 'muscle']
 
 const props = defineProps({
@@ -50,16 +49,29 @@ const option = ref({
 })
 
 const cfrom = ref()
-const mySubmit = async () => {
-  let formData = JSON.parse(JSON.stringify(fApi.value))
-  formData.pid = props.pid
-  const res = await addHealthyAssess(props.activeUrl, formData)
-  if (res.success) {
-    ElMessage({
-      type: 'success',
-      message: '添加成功'
-    })
-  }
+const mySubmit = () => {
+  cfrom.value.fapi.validate(async (valid, fail) => {
+    console.log(valid)
+    if (valid === true) {
+      //todo 表单验证通过
+      let formData = JSON.parse(JSON.stringify(fApi.value))
+      formData.pid = props.pid
+      const res = await addHealthyAssess(props.activeUrl, formData)
+      if (res.success) {
+        cfrom.value.fapi.resetFields()
+        ElMessage({
+          type: 'success',
+          message: '添加成功'
+        })
+      }
+    } else {
+      //todo 表单验证未通过
+    }
+  })
+}
+
+const atest = () => {
+  console.log(cfrom.value.fapi)
 }
 
 const setRule = () => {
@@ -83,8 +95,6 @@ const setRule = () => {
 
 const setFromData = () => {}
 
-const atest = () => {}
-
 defineExpose({
   setRule
 })
@@ -93,5 +103,9 @@ defineExpose({
 <style lang="scss" scoped>
 .my-btn {
   margin-left: 130px;
+}
+
+.common-cotianer {
+  width: 50vw;
 }
 </style>

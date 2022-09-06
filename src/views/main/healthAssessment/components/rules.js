@@ -124,11 +124,12 @@ const rules = {
         title: '骨密度',
         value: [],
         props: {
-          action: 'http://47.98.120.130:8080/bone/insert',
+          action: 'https://www.aikeyunkang.top:8081/bone/insert',
           name: 'density',
           withCredentials: true,
           limit: 1,
-          onSuccess: function (res, file) {
+          onSuccess: function (res, file, fileList) {
+            fileList.pop()
             ElMessage({
               type: 'success',
               message: '已上传成功，无需手动提交',
@@ -153,7 +154,7 @@ const rules = {
         title: '肌骨健康',
         value: [],
         props: {
-          action: 'http://47.98.120.130:8080/BM/insert',
+          action: 'https://www.aikeyunkang.top:8081/BM/insert',
           name: 'density',
           withCredentials: true,
           limit: 1,
@@ -273,7 +274,7 @@ const rules = {
         title: '血生化',
         value: [],
         props: {
-          action: 'http://47.98.120.130:8080/blood/insert',
+          action: 'https://www.aikeyunkang.top:8081/blood/insert',
           name: 'state',
           withCredentials: true,
           limit: 1,
@@ -295,7 +296,7 @@ const rules = {
         title: '血液状态',
         value: [],
         props: {
-          action: 'http://47.98.120.130:8080/blood/insert',
+          action: 'https://www.aikeyunkang.top:8081/blood/insert',
           name: 'raw',
           withCredentials: true,
           limit: 1,
@@ -320,6 +321,21 @@ const rules = {
         field: 'VC',
         title: '肺活量',
         validate: [{ type: 'number', required: true, message: '请输入数字' }]
+      }
+    ]
+  },
+  bloodPressure: {
+    rule: [
+      {
+        type: 'InputNumber',
+        field: 'pressure',
+        title: '血压（mm Hg）',
+        validate: [{ type: 'number', required: true, message: '请输入数字' }],
+        span: 12,
+        props: {
+          min: 0,
+          controls: false
+        }
       }
     ]
   }

@@ -30,7 +30,7 @@
         :width="item.width"
       >
         <template v-slot="{ row }" v-if="item.prop === 'action'">
-          <el-button @click="handleCheck(row)">查看</el-button>
+          <el-button @click="handleCheck(row)" v-debounce>查看</el-button>
           <el-button @click="handleDelete(row)" type="danger">删除</el-button>
         </template></el-table-column
       >
@@ -117,10 +117,9 @@ const detailDialogVisible = ref(false)
 const handleCheck = async (row) => {
   const res = await getHuibaoById({ id: row.id })
   let resData = JSON.parse(JSON.stringify(res.body))
-  console.log(resData)
-  detailDialogVisible.value = true
   nextTick(() => {
     reportRef.value.setData(resData)
+    detailDialogVisible.value = true
   })
 }
 

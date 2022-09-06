@@ -35,7 +35,6 @@ const store = useStore()
 
 const patient = JSON.parse(JSON.stringify(store.state.patient.patientInfo))
 const patientInfo = reactive(patient)
-console.log(patientInfo)
 
 // 获取路由
 const router = useRouter()

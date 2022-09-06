@@ -142,7 +142,7 @@ const uploadRef = ref()
 const submitForm = () => {
   instance.ctx.$refs['vForm'].validate((valid) => {
     if (!valid) return
-    formData.pid = 1
+    formData.pid = props.pid
     uploadRef.value.submit()
     //TODO: 提交表单
   })

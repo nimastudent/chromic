@@ -39,7 +39,7 @@ export default {
       const res = await getChatList()
       if (res.success) {
       }
-    },
+    }
   }
 }
 </script>

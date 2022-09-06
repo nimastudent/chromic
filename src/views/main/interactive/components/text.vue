@@ -1,7 +1,16 @@
 <template>
   <div class="text">
     <div class="pic">
-      <i class="el-icon-picture-outline icon"></i>
+      <i class="el-icon-picture-outline icon" @click="handleUploadImg"></i>
+      <input
+        ref="imgRef"
+        id="imgRef"
+        type="file"
+        style="display: none"
+        @change="fileChange"
+        accept=".jpg, .jpeg, .png"
+        multiple
+      />
     </div>
     <textarea
       ref="text"
@@ -20,71 +29,93 @@
   </div>
 </template>
 
+<script setup>
+import { computed, ref, onMounted, nextTick, watch } from 'vue-demi'
+import { useStore } from 'vuex'
 
+const store = useStore()
 
-<script>
-export default {
-  data() {
-    return {
-      content: '',
-      frequency: 0,
-      warn: false
-    }
-  },
-  computed: {
-    selectId() {
-      return this.$store.getters['chat/selectId']
-    }
-  },
-  mounted() {
-    this.$refs.text.focus()
-  },
-  watch: {
-    // 在选择其它对话的时候 聚焦输入框
-    selectId: {
-      handler(newValue, oldValue) {
-        console.log(newValue)
-        setTimeout(() => {
-          this.$refs.text.focus()
-        }, 0)
-      },
-      deep: true
-    },
-    // 当输入框中的值为空时 弹出提示  并在一秒后消失
-    content() {
-      if (this.content === '') {
-        if (this.frequency === 0) {
-          this.warn = true
-          this.frequency++
-          setTimeout(() => {
-            this.warn = false
-          }, 1000)
-        }
-      }
-    }
-  },
-  methods: {
-    // 回车发送消息
-    onkeyup(e) {
-      if (e.keyCode === 13) {
-        this.send()
-      }
-    },
-    // 单击发送按钮发送信息
-    send() {
-      console.log(this)
-      this.warn = true
-      if (this.content.length <= 1) {
-        this.warn = true
-        this.content = ''
-        setTimeout(() => {
-          this.warn = false
-        }, 1000)
-      } else {
-        this.$store.dispatch('chat/sendMsg', this.content)
-      }
+const content = ref('')
+const frequency = ref(0)
+const warn = ref(false)
+const text = ref()
+
+// 文件ref
+const imgRef = ref()
+
+const selectId = computed(() => {
+  return store.state.chat.selectId
+})
+
+onMounted(() => {
+  nextTick(() => {
+    // 文本框聚焦
+    text.value.focus()
+  })
+})
+
+watch(selectId, () => {
+  text.value.focus()
+})
+
+watch(content, () => {
+  if (content.value === '') {
+    if (frequency.value === 0) {
+      warn.value = true
+      frequency.value++
+      setTimeout(() => {
+        warn.value = false
+      }, 1000)
     }
   }
+})
+
+const send = () => {
+  warn.value = true
+  if (content.value.length <= 1) {
+    warn.value = true
+    content.value = ''
+    setTimeout(() => {
+      warn.value = false
+    }, 1000)
+  } else {
+    store.dispatch('chat/sendMsg', {msg:content.value, type:'text'}).then((res) => {
+      if (res) {
+        content.value = ''
+        store.dispatch('chat/fetchChatById', selectId.value)
+      }
+    })
+  }
+}
+
+const onkeyup = (e) => {
+  if (e.keyCode === 13) {
+    send()
+  }
+}
+
+// 单击图片文件上传
+const handleUploadImg = () => {
+  // imgRef.value.clivk()
+  // const file = document.getElementById('imgRef')
+  imgRef.value.click()
+}
+
+const fileChange = (e) => {
+  const files = imgRef.value.files
+  console.log(files)
+
+  const img = new FileReader()
+  img.addEventListener(
+    'load',
+    function () {
+      const res = img.result
+      console.log(res)
+      store.dispatch('chat/sendMsg',{ msg:res, type:'image'})
+    },
+    false
+  )
+  img.readAsDataURL(files[0])
 }
 </script>
 
@@ -94,6 +125,7 @@ export default {
   min-height: 150px;
   height: 20vh;
   background: #fff;
+  transition: all 0.8s ease;
 }
 
 .pic {

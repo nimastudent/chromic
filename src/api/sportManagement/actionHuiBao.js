@@ -29,6 +29,15 @@ export function getHuibaoById(params) {
   })
 }
 
+// 医生根据id提建议
+export function adviceSportById(data) {
+  return request({
+    url: '/report/manage/advice',
+    method: 'post',
+    data
+  })
+}
+
 // 删除执行汇报
 export function deleteHuibao(params) {
   return request({

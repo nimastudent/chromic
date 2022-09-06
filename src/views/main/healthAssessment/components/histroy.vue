@@ -4,7 +4,7 @@
     :model-value="histroyDialogVisiable"
     @close="handleClose"
   >
-    <el-table :data="tableData">
+    <el-table :data="tableData" :size="'large'">
       <el-table-column prop="date" label="日期" />
       <el-table-column prop="action" label="操作">
         <template v-slot="{ row }">

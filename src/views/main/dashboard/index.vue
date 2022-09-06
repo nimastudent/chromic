@@ -4,6 +4,8 @@
   <div>
     <button @click="webScoketConnTest">testconne</button>
     <button @click="sendData">send msg</button>
+
+   <img src="" alt="" srcset="">
   </div>
 </template>
 
@@ -17,6 +19,8 @@
 // data.socketServe = SocketService.Instance
 // data.socketServe.registerCallBack('callback1', data.socketServe)
 
+import { ref } from 'vue-demi'
+
 // const sendData = () => {
 //   const obj = {
 //     uid: 1,
@@ -28,6 +32,10 @@
 //   }
 //   data.socketServe.send(obj)
 // }
+
+const num = ref(0)
+
+const img = ""
 </script>
 
 <style lang="scss" scoped>

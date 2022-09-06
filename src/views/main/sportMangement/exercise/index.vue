@@ -104,15 +104,8 @@ const handleCurrentChange = () => {}
 
 // 处理单击汇查看处方
 const handleHuiBao = async (row) => {
-  console.log(row.id)
-  if (role === 'admin') {
-    const res = await getChuFangByIdForAdm({ pid: row.id })
-    if (res) {
-      console.log(res)
-    }
-  } else if (role === 'staff') {
-    const res = await getChuFangByIdForDoc({ pid: row.id })
-  }
+  const res = await getChuFangByIdForDoc({ pid: row.id })
+  console.log(res)
 }
 
 if (role === 'admin') {

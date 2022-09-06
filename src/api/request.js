@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 // https://www.aikeyunkang.top:8081
-const baseURL = 'https://www.aikeyunkang.top:8081'
+const baseURL = '/api'
 
 const service = axios.create({
   baseURL,

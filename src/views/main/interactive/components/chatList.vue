@@ -57,6 +57,7 @@ export default {
   methods: {
     handleSelect(item) {
       this.$store.dispatch('chat/selectSession', item)
+      this.$store.commit('chat/SETLOADING', true)
       this.aId = item.toUid
     }
   }

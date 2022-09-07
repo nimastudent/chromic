@@ -7,7 +7,8 @@ const state = () => ({
   selectName: '',
   selectChat: [],
   chatList: [],
-  scoketService: SocketService.Instance
+  scoketService: SocketService.Instance,
+  loading: false
 })
 
 // getters
@@ -23,6 +24,9 @@ const getters = {
   },
   selectId(state) {
     return state.selectId
+  },
+  loading(state) {
+    return state.loading
   }
 }
 
@@ -39,6 +43,9 @@ const mutations = {
   },
   SELECTCHAT(state, list) {
     state.selectChat = list
+  },
+  SETLOADING(state, isLoading) {
+    state.loading = isLoading
   }
 }
 
@@ -51,6 +58,7 @@ const actions = {
   // 发送信息
   sendMsg(context, { msg, type }) {
     return new Promise((resolve, reject) => {
+      context.commit('SETLOADING', true)
       const obj = {
         uid: parseInt(sessionStorage.getItem('doctorId')),
         toUid: parseInt(context.state.selectId),
@@ -89,6 +97,7 @@ const actions = {
   fetchChatById({ commit }, id) {
     getChatContentById({ toUid: id }).then((res) => {
       commit('SELECTCHAT', res.body)
+      commit('SETLOADING', false)
     })
   }
 }

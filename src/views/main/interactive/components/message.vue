@@ -1,5 +1,5 @@
 <template>
-  <div class="message">
+  <div class="message" v-loading="messageLoading">
     <header class="header">
       <div class="friendname">{{ selectName }}</div>
     </header>
@@ -23,7 +23,7 @@
             <!-- :src="item.self ? user.img : selectedChat.img" -->
             <div class="content">
               <el-image
-                v-if="item.type === null"
+                v-if="item.type === 'image'"
                 :src="item.content"
                 :fit="'fill'"
               />
@@ -40,13 +40,14 @@
 // import { mapGetters, mapState } from "vuex";
 export default {
   computed: {
-    // ...mapGetters(["selectedChat", "messages"]),
-    // ...mapState(["user", "emojis"]),
     selectedChat() {
       return this.$store.getters['chat/selectChat']
     },
     selectName() {
       return this.$store.getters['chat/selectName']
+    },
+    messageLoading() {
+      return this.$store.getters['chat/loading']
     }
   },
   mounted() {

@@ -5,10 +5,9 @@
     @close="handleClose"
     width="50vw"
   >
-    <!-- <div v-for="(item, index) in tableData" :key="index">
-      {{ index }}: {{ item }}
-    </div> -->
-    <el-button @click="handleClickAdvice" type="primary">提出意见</el-button>
+    <div style="display: flex; justify-content: flex-end">
+      <el-button @click="handleClickAdvice" type="primary">提出意见</el-button>
+    </div>
     <el-descriptions title="" :column="2" border :size="'large'">
       <el-descriptions-item
         label="患者姓名"

@@ -24,6 +24,7 @@ import foodManagement from './modules/foodManagement'
 import adminManage from './modules/adminManage'
 import healthAssessment from './modules/healthAssessment'
 import interactive from './modules/interactive'
+import announcements from './modules/announcements'
 
 let modules = [...System]
 
@@ -37,6 +38,7 @@ let routes = [
   ...sportManagement,
   ...foodManagement,
   ...interactive,
+  ...announcements,
   ...adminManage,
   ...healthAssessment
 ]

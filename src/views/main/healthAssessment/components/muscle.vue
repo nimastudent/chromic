@@ -11,12 +11,23 @@
     <el-row>
       <el-col :span="11" class="grid-cell">
         <el-form-item label="握力（左）" prop="left">
-          <el-input v-model="formData.left" type="number" clearable></el-input>
+          <el-input
+            :controls="false"
+            v-model="formData.left"
+            :min="0"
+            type="number"
+            clearable
+          ></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="11" :push="1" class="grid-cell">
         <el-form-item label="握力（右）" prop="right">
-          <el-input v-model="formData.right" type="number" clearable></el-input>
+          <el-input
+            v-model="formData.right"
+            :min="0"
+            type="number"
+            clearable
+          ></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -26,13 +37,19 @@
           <el-input
             v-model="formData.sitStand"
             type="number"
+            :min="0"
             clearable
           ></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="11" :offset="1" class="grid-cell">
         <el-form-item label="4.5m步行（中老年）" prop="walk">
-          <el-input v-model="formData.walk" type="number" clearable></el-input>
+          <el-input
+            v-model="formData.walk"
+            type="number"
+            :min="0"
+            clearable
+          ></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -42,6 +59,7 @@
           <el-input
             v-model="formData.pushUp"
             type="number"
+            :min="0"
             clearable
           ></el-input>
         </el-form-item>
@@ -147,6 +165,7 @@ const submitForm = () => {
     //TODO: 提交表单
   })
 }
+
 const resetForm = () => {
   instance.ctx.$refs['vForm'].resetFields()
 }

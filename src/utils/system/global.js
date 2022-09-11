@@ -15,13 +15,13 @@ export default class SocketService {
   // 重新连接尝试的次数
   connectRetryCount = 0
   //  定义连接服务器的方法
-  connect() {
+  connect(uID) {
     // 连接服务器
     if (!window.WebSocket) {
       return console.log('您的浏览器不支持WebSocket')
     }
     if (!this.ws) {
-      let url = 'wss://www.aikeyunkang.top:8081/websocket/server/doctor/1'
+      let url = `wss://www.aikeyunkang.top:8081/websocket/server/doctor/${uID}`
       this.ws = new WebSocket(url)
       // 连接成功的事件
       this.ws.onopen = () => {
@@ -42,6 +42,7 @@ export default class SocketService {
       }
       // 得到服务端发送过来的数据
       this.ws.onmessage = (msg) => {
+        console.log('sotre', this)
         console.log(msg, '从服务端获取到了数据')
       }
     } else {

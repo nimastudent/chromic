@@ -70,6 +70,7 @@ watch(content, () => {
   }
 })
 
+// 单击发送
 const send = () => {
   warn.value = true
   if (content.value.length <= 1) {
@@ -104,7 +105,6 @@ const handleUploadImg = () => {
 const fileChange = (e) => {
   const files = imgRef.value.files
   console.log(files)
-
   const img = new FileReader()
   img.addEventListener(
     'load',

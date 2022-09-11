@@ -165,8 +165,7 @@ export default {
   text-align: left;
 }
 
-.main {
-}
+
 .main .content {
   display: inline-block;
   margin-left: 10px;

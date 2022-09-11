@@ -38,6 +38,9 @@ const fApi = ref()
 const rule = ref([])
 
 const option = ref({
+  form: {
+    labelPosition: 'right'
+  },
   submitBtn: false,
   resetBtn: true,
   onSubmit: function (formData) {
@@ -65,7 +68,6 @@ const mySubmit = () => {
         })
       }
     } else {
-      //todo 表单验证未通过
     }
   })
 }
@@ -106,6 +108,6 @@ defineExpose({
 }
 
 .common-cotianer {
-  width: 50vw;
+  // width: 50vw;
 }
 </style>

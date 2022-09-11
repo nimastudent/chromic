@@ -23,6 +23,12 @@
           :activeUrl="activeUrl"
         ></muscle>
 
+        <bone
+          v-else-if="activeUrl === 'bone'"
+          :pid="pid"
+          :activeUrl="activeUrl"
+        ></bone>
+
         <blood v-else :pid="pid" :activeUrl="activeUrl"></blood>
       </div>
     </div>
@@ -39,6 +45,7 @@ import histroy from './components/histroy.vue'
 import common from './components/common.vue'
 import blood from './components/blood.vue'
 import muscle from './components/muscle.vue'
+import bone from './components/bone.vue'
 import { inject, defineProps, watch, ref, nextTick, computed } from 'vue'
 import { getTypeData, getHistroyData } from '@/api/healthAssessment/main'
 

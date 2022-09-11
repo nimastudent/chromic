@@ -2,6 +2,7 @@ import { getChatList, getChatContentById } from '@/api/chat/chat'
 import SocketService from '@/utils/system/global.js'
 import { getNowTime } from '@/utils/params/date.js'
 
+
 const state = () => ({
   selectId: 0,
   selectName: '',
@@ -52,7 +53,8 @@ const mutations = {
 // actions
 const actions = {
   init({ state }) {
-    SocketService.Instance.connect()
+    const did = window.sessionStorage.getItem('doctorId')
+    SocketService.Instance.connect(did)
     state.scoketService = SocketService.Instance
   },
   // 发送信息

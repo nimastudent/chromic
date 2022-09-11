@@ -1,20 +1,20 @@
 <template>
-  <el-card :body-style="{ padding: '5px 10px', width: '250px' }">
-    <div class="category">
-      <div class="header-box">
-        <h2>分类列表</h2>
-      </div>
-      <ul class="list system-scrollbar" style="overflow: auto">
-        <li
-          v-for="(item, index) in list"
-          :key="index"
-          @click="changeActive(item, index)"
-        >
-          <span>{{ index }}</span>
-        </li>
-      </ul>
+  <!-- <el-card :body-style="{ padding: '5px 10px', width: '250px' }"> -->
+  <div class="category">
+    <div class="header-box">
+      <h2>分类列表</h2>
     </div>
-  </el-card>
+    <ul class="list">
+      <li
+        v-for="(item, index) in list"
+        :key="index"
+        @click="changeActive(item, index)"
+      >
+        <span>{{ index }}</span>
+      </li>
+    </ul>
+  </div>
+  <!-- </el-card> -->
 </template>
 
 <script setup>
@@ -85,9 +85,6 @@ const changeActive = (item, index) => {
       height: 30px;
       line-height: 30px;
     }
-    .el-input {
-      flex: 1;
-    }
   }
   .list {
     flex: 1;
@@ -95,8 +92,10 @@ const changeActive = (item, index) => {
     margin: 0;
     padding: 0;
     display: block;
+    overflow: auto;
+
     li {
-      height: 38px;
+      height: 35px;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -121,10 +120,6 @@ const changeActive = (item, index) => {
         overflow: hidden;
         font-size: 14px;
       }
-    }
-    .load-tip {
-      font-size: 14px;
-      color: #616161;
     }
   }
 }

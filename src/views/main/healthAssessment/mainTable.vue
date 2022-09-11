@@ -1,6 +1,6 @@
 <template>
   <el-card :body-style="{ padding: '5px 10px' }">
-    <div style="height: 73vh">
+    <div style="height: 70vh">
       <h3>
         {{ active }}
       </h3>

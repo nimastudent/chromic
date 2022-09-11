@@ -25,7 +25,7 @@ slot="footer"：弹窗分为两部分（ body 和 footer ），这里为 footer
     <!-- 弹窗表单内容 -->
     <!--                定义数据源 -->
     <!--                                                          表单校验 -->
-    <el-form ref="formRef" :model="form" label-width="78px" :rules="rules">
+    <el-form ref="formRef" :model="form" label-width="100px" :rules="rules">
       <!-- prop 属性              校验规则和数据匹配 -->
       <!-- 父组件可以使用 props 把数据传给子组件。 -->
       <el-form-item label="医生姓名" prop="name">

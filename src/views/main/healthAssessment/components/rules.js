@@ -460,16 +460,15 @@ const rules = {
   bloodPressure: {
     rule: [
       {
-        type: 'InputNumber',
+        type: 'number',
         field: 'pressure',
         title: '血压（mm Hg）',
         validate: [{ type: 'number', required: true, message: '请输入数字' }],
-        span: 12,
         props: {
           min: 0,
-          controls: false
         }
-      }
+      },
+      
     ]
   }
 }

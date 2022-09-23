@@ -8,18 +8,24 @@
           style="margin-left: 10px"
           >新增公告</el-button
         >
+        <el-button @click="handleClickChioseBtn">设为轮播图</el-button>
       </el-row>
     </el-row>
 
     <el-table
+      ref="table"
       v-loading="loading"
       :data="tableData"
       stripe
       :border="true"
       :height="cardHeight"
       highlight-current-row
+      selection
+      @selection-change="handelSelect"
+      @select-all="handleSelectAll"
       style="font-size: 1rem"
     >
+      <el-table-column type="selection" width="55" />
       <el-table-column
         :prop="item.prop"
         :label="item.label"
@@ -27,11 +33,40 @@
         :key="index"
         :width="item.width"
       >
-        <template v-slot="{ row }" v-if="item.prop === 'action'">
-          <el-button @click="handleEdit(row)">编辑</el-button>
-          <el-button type="danger" @click="handleDelete(row)">删除</el-button>
-        </template></el-table-column
-      >
+        <template v-slot="{ row }" v-if="item.prop === 'firstPicture'">
+          <el-image
+            v-if="row.firstPicture"
+            class="consult-img"
+            :src="row.firstPicture"
+          ></el-image>
+          <span v-else>暂未设置</span>
+        </template>
+        <template v-slot="{ row }" v-else-if="item.prop === 'action'">
+          <el-row :gutter="24">
+            <el-col :span="8">
+              <el-upload
+                class="upload-demo"
+                :action="uploadUrl"
+                :limit="1"
+                :data="{ id: row.id }"
+                name="file"
+                :with-credentials="true"
+                :on-success="handleSuccess"
+              >
+                <el-button type="primary">设置预览图片</el-button>
+              </el-upload>
+            </el-col>
+            <el-col :span="6">
+              <el-button @click="handleEdit(row)">编辑</el-button>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="danger" @click="handleDelete(row)"
+                >删除</el-button
+              >
+            </el-col>
+          </el-row>
+        </template>
+      </el-table-column>
     </el-table>
 
     <Pagination
@@ -56,14 +91,16 @@ import {
   getNoticeByAdmin,
   getNoticeByUser,
   deleteNotice,
+  submitChiose
 } from '@/api/announcements/index'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { options } from './options'
 import { useStore } from 'vuex'
 import Pagination from '@/components/pagination/index.vue'
 import AnnouncementsDialog from '@/views/main/announcements/components/announcementsDialog.vue'
 import { getHeightWithOutHeader } from '@/utils/params/height'
+import { getURl } from '@/api/request'
 
 const cardHeight = getHeightWithOutHeader()
 const store = useStore()
@@ -79,8 +116,14 @@ const total = ref(0)
 const editData = ref()
 const queryForm = reactive({
   pageNum: 1,
-  pageSize: 10,
+  pageSize: 10
 })
+
+const uploadUrl = computed(() => {
+  return `${getURl()}/notice/setFirstPicture`
+})
+const choiseArray = ref([])
+const table = ref()
 
 // 获取目前是账户身份
 const role = store.state.user.role
@@ -125,7 +168,7 @@ const handleDelete = (row) => {
         ElMessage({ type: 'info', message: '取消成功!' })
         done()
       }
-    },
+    }
   })
 }
 
@@ -137,6 +180,61 @@ const addNewNotice = () => {
   dialogVisible.value = true
 }
 
+// 图片上传成功
+const handleSuccess = (res, file, fileList) => {
+  fileList.pop()
+  console.log(fileList)
+  if (res.success) {
+    ElMessage({
+      type: 'success',
+      message: '上传成功'
+    })
+    getList()
+  }
+}
+
+//处理表格单击
+const handelSelect = (arr, currentClick) => {
+  console.log('table', table)
+  console.log('arr', arr)
+
+  if (arr.length > 3) {
+    table.value.clearSelection()
+    choiseArray.value = []
+    ElMessage({
+      type: 'error',
+      message: '您最多选择三个'
+    })
+  } else {
+    choiseArray.value = arr
+  }
+}
+
+// 处理选择轮播图
+const handleClickChioseBtn = async () => {
+  const arr = choiseArray.value
+  if (arr.length == 0) {
+    ElMessage({
+      type: 'error',
+      message: '请选择公告'
+    })
+  } else {
+    console.log(arr)
+    const params = []
+    arr.forEach((item) => {
+      params.push(item.id)
+    })
+    const res = await submitChiose(params)
+    if (res.success) {
+      ElMessage({
+        type: 'success',
+        message: '选择成功！'
+      })
+      table.value.clearSelection()
+    }
+  }
+}
+
 getList()
 </script>
 
@@ -146,5 +244,11 @@ getList()
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.consult-img {
+  height: 100px;
+  display: table-cell;
+  text-align: center;
 }
 </style>

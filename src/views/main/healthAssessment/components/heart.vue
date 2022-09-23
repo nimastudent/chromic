@@ -10,10 +10,10 @@
   >
     <el-row>
       <el-col :span="11" class="grid-cell">
-        <el-form-item label="握力（左）" prop="left">
+        <el-form-item label="安静心率" prop="rate">
           <el-input
             :controls="false"
-            v-model="formData.left"
+            v-model="formData.rate"
             :min="0"
             type="number"
             clearable
@@ -21,9 +21,9 @@
         </el-form-item>
       </el-col>
       <el-col :span="11" :push="1" class="grid-cell">
-        <el-form-item label="握力（右）" prop="right">
+        <el-form-item label="血氧饱和度" prop="SaO2">
           <el-input
-            v-model="formData.right"
+            v-model="formData.SaO2"
             :min="0"
             type="number"
             clearable
@@ -33,9 +33,9 @@
     </el-row>
     <el-row>
       <el-col :span="11" class="grid-cell">
-        <el-form-item label="30s坐站（中老年）" prop="sitStand">
+        <el-form-item label="射血指数" prop="EF">
           <el-input
-            v-model="formData.sitStand"
+            v-model="formData.EF"
             type="number"
             :min="0"
             clearable
@@ -43,32 +43,10 @@
         </el-form-item>
       </el-col>
       <el-col :span="11" :offset="1" class="grid-cell">
-        <el-form-item label="4.5m步行（中老年）" prop="walk">
-          <el-input
-            v-model="formData.walk"
-            type="number"
-            :min="0"
-            clearable
-          ></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="11" class="grid-cell">
-        <el-form-item label="俯卧撑（男）" prop="pushUp">
-          <el-input
-            v-model="formData.pushUp"
-            type="number"
-            :min="0"
-            clearable
-          ></el-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="11" :offset="1" class="grid-cell">
-        <el-form-item label="肌力汇总" prop="number">
+        <el-form-item label="安静心电图">
           <el-upload
             ref="uploadRef"
-            name="all"
+            name="electricity"
             :action="uploadUrl"
             :data="formData"
             list-type="picture-card"
@@ -110,42 +88,28 @@ const uploadUrl = computed(() => {
 })
 
 const formData = reactive({
-  left: '',
-  right: '',
-  sitStand: '',
-  walk: '',
-  pushUp: ''
+  rate: '',
+  SaO2: '',
+  EF: ''
 })
 
 const rules = ref({
-  pushUp: [
+  rate: [
     {
       required: true,
-      message: '请输入俯卧撑（男）'
+      message: '请输入安静心率'
     }
   ],
-  left: [
+  SaO2: [
     {
       required: true,
-      message: '请输入握力（左）'
+      message: '请输入血氧饱和度'
     }
   ],
-  right: [
+  EF: [
     {
       required: true,
-      message: '请输入握力（右）'
-    }
-  ],
-  sitStand: [
-    {
-      required: true,
-      message: '请输入30s坐站（中老年）'
-    }
-  ],
-  walk: [
-    {
-      required: true,
-      message: '请输入4.5m步行（中老年）'
+      message: '请输入射血指数'
     }
   ]
 })
@@ -158,11 +122,11 @@ const state = reactive({
 const instance = getCurrentInstance()
 const uploadRef = ref()
 const submitForm = () => {
+  console.log(props)
   instance.ctx.$refs['vForm'].validate((valid) => {
     if (!valid) return
     formData.pid = props.pid
     uploadRef.value.submit()
-    //TODO: 提交表单
   })
 }
 

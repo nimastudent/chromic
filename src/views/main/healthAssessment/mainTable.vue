@@ -23,17 +23,18 @@
           :activeUrl="activeUrl"
         ></muscle>
 
-        <bone
-          v-else-if="activeUrl === 'bone'"
+        <heart
+          v-else-if="activeUrl === 'heart'"
           :pid="pid"
           :activeUrl="activeUrl"
-        ></bone>
+        ></heart>
 
         <blood v-else :pid="pid" :activeUrl="activeUrl"></blood>
       </div>
     </div>
   </el-card>
   <histroy
+    ref="hisitroyRef"
     v-model="histroyDialogVisiable"
     :pid="pid"
     :activeUrl="activeUrl"
@@ -45,7 +46,7 @@ import histroy from './components/histroy.vue'
 import common from './components/common.vue'
 import blood from './components/blood.vue'
 import muscle from './components/muscle.vue'
-import bone from './components/bone.vue'
+import heart from './components/heart.vue'
 import { inject, defineProps, watch, ref, nextTick, computed } from 'vue'
 import { getTypeData, getHistroyData } from '@/api/healthAssessment/main'
 
@@ -67,9 +68,14 @@ watch(activeUrl, (newVal, oldVal) => {
   }
 })
 
+
+const hisitroyRef = ref()
 const histroyDialogVisiable = ref(false)
 const getHistroy = () => {
-  histroyDialogVisiable.value = true
+  nextTick(() => {
+    hisitroyRef.value.getHistroy()
+    histroyDialogVisiable.value = true
+  })
 }
 </script>
 <style lang="scss" scoped>

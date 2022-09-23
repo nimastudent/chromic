@@ -39,7 +39,8 @@ const rule = ref([])
 
 const option = ref({
   form: {
-    labelPosition: 'right'
+    labelPosition: 'right',
+    size: 'medium'
   },
   submitBtn: false,
   resetBtn: true,
@@ -66,6 +67,7 @@ const mySubmit = () => {
           type: 'success',
           message: '添加成功'
         })
+        cfrom.value.fapi.resetFields()
       }
     } else {
     }

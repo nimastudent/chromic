@@ -3,51 +3,95 @@
     <el-row :gutter="24" style="margin: 5px 0">
       <el-row :span="4">
         <el-button @click="handleCreate" type="primary">新增动作</el-button>
-        <el-button @click="handleActiontype" type="primary">动作类型管理</el-button>
-        <!-- <el-button text @click="actionTypeDialogVisible = true" type="primary">动作类型管理</el-button> -->
+        <el-button @click="handleActiontype" type="primary"
+          >动作类型管理</el-button
+        >
       </el-row>
 
       <el-row :span="1" class="patient-name-contianer"> 动作类型： </el-row>
       <el-row :span="7">
-        <el-select v-model="queryForm.actionType" placeholder="请选择" clearable>
-          <el-option v-for="(item, index) in actionTypeOptions" :key="index" :label="item.value" :value="item.value">
+        <el-select
+          v-model="queryForm.actionType"
+          placeholder="请选择"
+          clearable
+        >
+          <el-option
+            v-for="(item, index) in actionTypeOptions"
+            :key="index"
+            :label="item.name"
+            :value="item.name"
+          >
           </el-option>
         </el-select>
       </el-row>
       <el-row>
-        <el-button type="primary" @click="getList" style="margin-left: 10px">搜索</el-button>
+        <el-button type="primary" @click="getList" style="margin-left: 10px"
+          >搜索</el-button
+        >
       </el-row>
     </el-row>
-    <el-table  v-loading="loading" :data="tableData" stripe :border="true" :height="cardHeight" highlight-current-row
-      @current-change="handleCurrentChange" style="font-size: 1rem">
-      <el-table-column v-for="(item, index) in options" :key="index" :prop="item.prop" :label="item.label"
-        :width="item.width">
+    <el-table
+      v-loading="loading"
+      :data="tableData"
+      stripe
+      :border="true"
+      :height="cardHeight"
+      highlight-current-row
+      @current-change="handleCurrentChange"
+      style="font-size: 1rem"
+    >
+      <el-table-column
+        v-for="(item, index) in options"
+        :key="index"
+        :prop="item.prop"
+        :label="item.label"
+        :width="item.width"
+      >
         <template v-slot="{ row }" v-if="item.prop === 'action'">
           <el-row :gutter="24">
             <el-col :span="8">
-              <el-upload class="upload-demo" :action="uploadUrl" :limit="1" :data="{ id: row.id }" name="picture"
-                :with-credentials="true" :on-success="handleSuccess">
-                <el-button type="primary">设置背景图片</el-button>
+              <el-upload
+                :action="uploadUrl"
+                :limit="1"
+                :data="{ id: row.id }"
+                name="picture"
+                :with-credentials="true"
+                :on-success="handleSuccess"
+              >
+                <el-button type="primary" style="margin-left: 20px"
+                  >设置背景图片</el-button
+                >
               </el-upload>
             </el-col>
             <el-col :span="8">
               <el-button @click="handleSelect(row)">查看详细</el-button>
             </el-col>
-            <el-col :span="7">
-              <el-button type="danger" @click="handleDelete(row.id)">删除</el-button>
+            <el-col :span="8">
+              <el-button type="danger" @click="handleDelete(row.id)"
+                >删除</el-button
+              >
             </el-col>
           </el-row>
         </template>
       </el-table-column>
     </el-table>
 
-    <Pagination :total="total" v-model:pageSize="queryForm.pageSize" v-model:pageNum="queryForm.pageNum"
-      @updateList="getList" />
+    <Pagination
+      :total="total"
+      v-model:pageSize="queryForm.pageSize"
+      v-model:pageNum="queryForm.pageNum"
+      @updateList="getList"
+    />
   </el-card>
 
   <!-- 这个actionTypeDialogVisible -->
-  <updata-dialog v-model:dialogVisible="dialogVisible" @updateList="getList" :actionTypeOptions="actionTypeOptions"
-    :d="dialogStatus" :actionData="actionData" />
+  <updata-dialog
+    v-model:dialogVisible="dialogVisible"
+    @updateList="getList"
+    :actionTypeOptions="actionTypeOptions"
+    :dialogStatus="dialogStatus"
+    :actionData="actionData"
+  />
   <ac-type-dialog v-model:dialogVisible="actionTypeDialogVisible" />
 </template>
 
@@ -64,7 +108,8 @@ import { getHeightWithOutHeader } from '@/utils/params/height'
 import {
   getAllAction,
   getActionById,
-  deleteAction
+  deleteAction,
+  getAllActionType
 } from '@/api/sportManagement/action.js'
 import { options } from './options'
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -85,17 +130,7 @@ const queryForm = ref({
   pageNum: 1,
   pageSize: 10
 })
-const actionTypeOptions = [
-  {
-    value: '有氧运动'
-  },
-  {
-    value: '抗阻训练'
-  },
-  {
-    value: '柔韧训练'
-  }
-]
+const actionTypeOptions = ref([])
 const dialogStatus = ref('')
 const tableData = ref([])
 const actionData = ref({})
@@ -110,6 +145,14 @@ const getList = async () => {
   }
 }
 
+// 获取所有动作类型
+const getAllActionTypeList = async () => {
+  const res = await getAllActionType()
+  if (res) {
+    actionTypeOptions.value = res.body
+  }
+}
+
 const handleSelect = async (row) => {
   const res = await getActionById({ id: row.id })
   if (res.success) {
@@ -120,19 +163,18 @@ const handleSelect = async (row) => {
 }
 
 const handleCreate = () => {
-  // 你看这个 方法   单击后执行的  是将一个 visible 改为 true  然后设置status 为 add
-  // 这些是传给 updateDIalog 的
   dialogStatus.value = 'add'
   dialogVisible.value = true
 }
 
 // 动作类型管理方法
 const handleActiontype = () => {
-  // 你这个  首先 要把 actionTypedialog  引入  template 然后 给他绑定 visible
   actionTypeDialogVisible.value = true
 }
 
 const handleSuccess = (res, file, files) => {
+  files.pop()
+
   console.log(res)
   if (res.success) {
     ElMessage({
@@ -166,9 +208,10 @@ const handleDelete = async (id) => {
     })
 }
 
-const handleCurrentChange = () => { }
+const handleCurrentChange = () => {}
 
 getList()
+getAllActionTypeList()
 </script>
 <style lang="scss" scoped>
 .patient-name-contianer {

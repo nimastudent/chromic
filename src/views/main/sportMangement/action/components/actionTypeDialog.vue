@@ -62,8 +62,6 @@ import { getHeightWithOutHeader } from '@/utils/params/height'
 import { actiontypedialogoptions } from './actiontypedialogoptions.js'
 import {
   getAllActionType,
-  insertActionType,
-  updateActionType,
   deleteActionType
 } from '@/api/sportManagement/action.js'
 import adAcTypeDialog from './components/addActionTypeDialog.vue'

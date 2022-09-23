@@ -38,7 +38,9 @@
           </el-row>
           <el-row :gutter="20" class="second-row">
             <el-col :span="7">
-              <!-- <el-button>互动记录</el-button> -->
+              <el-button @click="handleClickeDayReport(row)" v-debounce
+                >每日数据</el-button
+              >
             </el-col>
             <el-col :span="7">
               <el-button @click="handleEdit(row)">编辑信息</el-button>
@@ -75,7 +77,14 @@
     v-model:dieaseRecordDIalogVisible="dieaseRecordDIalogVisible"
     :patientId="patientId"
     :docList="docList"
-  ></diease-record-dialog>
+  />
+
+  <!-- 每日数据 -->
+  <day-report-dialog
+    v-model:dialogVisible="dayReportDialogVisible"
+    :patientId="patientId"
+    :dayReportList="dayReportList"
+  />
 
   <sport-dialog
     v-model:sportDialogVisible="sportDialogVisible"
@@ -86,6 +95,7 @@
 <script setup>
 import sportDialog from './components/sportDialog.vue'
 import dieaseRecordDialog from './components/dieaseRecordDialog.vue'
+import dayReportDialog from './components/dayReportDialog.vue'
 import Dialog from './components/Dialog.vue'
 import Pagination from '@/components/pagination/index.vue'
 import {
@@ -93,7 +103,9 @@ import {
   getAllPaientByAdmin,
   deletePaientById,
   getMecIDName,
-  getDocList
+  getDocList,
+  getDayXueYaReport,
+  getDayXueTangReport
 } from '@/api/patientManagement/index'
 
 import { getDiseaseById } from '@/api/diseaseManagement/index'
@@ -202,12 +214,28 @@ const handleDisease = (row) => {
   dieaseRecordDIalogVisible.value = true
 }
 
+const dayReportDialogVisible = ref(false)
+const dayReportList = ref([])
+// 处理单击每日数据
+const handleClickeDayReport = (row) => {
+  dayReportList.value = {}
+  getDayXueYaReport({ pid: row.id }).then((res) => {
+    const xueYaList = res.body
+    getDayXueTangReport({ pid: row.id }).then((res) => {
+      const xueTangList = res.body
+      dayReportList.value.xueYa = xueYaList
+      dayReportList.value.xueTang = xueTangList
+      dayReportDialogVisible.value = true
+
+      console.log(dayReportList)
+    })
+  })
+}
+
 const sportDialogVisible = ref(false)
 // 处理单击运动数据
 const handleSport = (row) => {
-  console.log(row)
   patientId.value = row.id
-
   sportDialogVisible.value = true
 }
 

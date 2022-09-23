@@ -51,6 +51,16 @@
     />
   </el-card>
 
+  <DurgDialog
+    v-model:dialogVisible="dialogVisible"
+    :dialogStatus="dialogStatus"
+    :role="role"
+    :doctorId="doctorId"
+    :docList="docList"
+    :editData="editData"
+    @updateList="getList"
+  />
+
   <!-- <food-dialog
     v-model:dialogVisible="dialogVisible"
     :doctorId="doctorId"
@@ -63,13 +73,15 @@
 </template>
 <script setup>
 import Pagination from '@/components/pagination/index.vue'
+import DurgDialog from './components/addDrug.vue'
 import { addItem, options } from './options'
 
-import { getAllDocList, deleteZhiDao } from '@/api/foodManagement/food.js'
+import { getAllDocList } from '@/api/foodManagement/food.js'
 import {
   getDrugListForDoc,
   getDrugListForAdm,
-  getDrugGuideById
+  getDrugGuideById,
+  deleteDrugById
 } from '@/api/foodManagement/drug.js'
 import { getHeightWithOutHeader } from '@/utils/params/height'
 import { ref } from 'vue'
@@ -80,7 +92,6 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 const store = useStore()
 const role = store.state.user.role
 // const role = 'admin'
-console.log(role)
 const cardHeight = getHeightWithOutHeader()
 
 const total = ref(0)
@@ -171,7 +182,7 @@ const handleDelete = (row) => {
     type: 'warning'
   })
     .then(async () => {
-      const res = await deleteZhiDao({ id: row.id })
+      const res = await deleteDrugById({ id: row.id })
       getList()
       ElMessage({
         type: 'success',

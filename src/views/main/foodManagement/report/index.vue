@@ -30,19 +30,36 @@
         :width="item.width"
       >
         <template v-if="item.prop === 'action'" v-slot="{ row }">
+          <el-button @click="handleCheck(row)" v-debounce>查看</el-button>
           <el-button @click="handleDelete(row)" type="danger"> 删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <Pagination
+      :total="total"
+      v-model:pageSize="queryForm.pageSize"
+      v-model:pageNum="queryForm.pageNum"
+      @updateList="getList"
+    />
+
+    <report-detail
+      ref="reportRef"
+      v-model:detailDialogVisible="detailDialogVisible"
+    ></report-detail>
   </el-card>
 </template>
 <script setup>
+import { ref, nextTick } from 'vue'
+import { options, addDoctor } from './options'
+import Pagination from '@/components/pagination/index.vue'
+import reportDetail from './components/reportDialog.vue'
 import {
   getAllHuibaoForDoc,
-  getAllHuibaoForAdm
+  getAllHuibaoForAdm,
+  getFoodDetailById,
+  deleteReport
 } from '@/api/foodManagement/foodreport.js'
 import { getHeightWithOutHeader } from '@/utils/params/height'
-import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { ElMessageBox, ElMessage } from 'element-plus'
 
@@ -50,6 +67,7 @@ const store = useStore()
 const role = store.state.user.role
 const cardHeight = getHeightWithOutHeader()
 
+const total = ref(0)
 const queryForm = ref({
   pageNum: 1,
   pageSize: 10
@@ -58,6 +76,7 @@ const queryForm = ref({
 const tableData = ref([])
 const loading = ref(false)
 const getList = () => {
+  loading.value = true
   if (role === 'admin') {
     // addItem()
     getListForAdm()
@@ -71,6 +90,8 @@ const getListForDoc = async () => {
   if (res.success) {
     console.log(res)
     tableData.value = res.body.content
+    total.value = res.body.totalPages
+    loading.value = false
   }
 }
 
@@ -79,7 +100,51 @@ const getListForAdm = async () => {
   if (res.success) {
     console.log(res)
     tableData.value = res.body.content
+    total.value = res.body.totalPages
+    loading.value = false
   }
+}
+
+const reportRef = ref(null)
+const detailDialogVisible = ref(false)
+// 处理单击汇查看汇报
+const handleCheck = async (row) => {
+  const res = await getFoodDetailById({ id: row.id })
+  let resData = JSON.parse(JSON.stringify(res.body))
+  console.log(reportRef.value)
+  if (resData.content == null) {
+    ElMessage({
+      type: 'info',
+      message: '暂无内容！'
+    })
+  } else {
+    nextTick(() => {
+      reportRef.value.setData(resData)
+      detailDialogVisible.value = true
+    })
+  }
+}
+
+const handleDelete = () => {
+  ElMessageBox.confirm('请确认是否删除该条记录', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      const res = await deleteReport({ id: row.id })
+      getList()
+      ElMessage({
+        type: 'success',
+        message: '删除成功'
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '删除取消'
+      })
+    })
 }
 
 getList()

@@ -131,7 +131,7 @@ export default {
 .message-wrapper {
   min-height: 390px;
   max-height: 390px;
-  padding: 10px 15px;
+  padding: 20px 15px;
   box-sizing: border-box;
   overflow-y: auto;
   border-bottom: 1px solid #e7e7e7;
@@ -164,7 +164,6 @@ export default {
 .message-item {
   text-align: left;
 }
-
 
 .main .content {
   display: inline-block;

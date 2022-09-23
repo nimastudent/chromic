@@ -36,6 +36,26 @@ export function getDocList() {
   })
 }
 
+// 获取患者每日数据
+
+// 医生查看患者的血糖记录
+export function getDayXueTangReport(params) {
+  return request({
+    url: '/health/all/sweet',
+    method: 'get',
+    params
+  })
+}
+
+// 医生查看患者的血压记录
+export function getDayXueYaReport(params) {
+  return request({
+    url: '/health/all/blood',
+    method: 'get',
+    params
+  })
+}
+
 // 医生添加患者
 export function addPaientByStaff(data) {
   return request({

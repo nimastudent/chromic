@@ -12,6 +12,7 @@
         >
       </el-row>
     </el-row>
+    
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -19,7 +20,6 @@
       :border="true"
       :height="cardHeight"
       highlight-current-row
-      @current-change="handleCurrentChange"
       style="font-size: 1rem"
     >
       <el-table-column
@@ -36,11 +36,6 @@
       >
     </el-table>
 
-    <report-detail
-      ref="reportRef"
-      v-model:detailDialogVisible="detailDialogVisible"
-    ></report-detail>
-
     <Pagination
       :total="total"
       v-model:pageSize="queryForm.pageSize"
@@ -48,6 +43,10 @@
       @updateList="getList"
     />
   </el-card>
+  <report-detail
+    ref="reportRef"
+    v-model:detailDialogVisible="detailDialogVisible"
+  ></report-detail>
 </template>
 
 <script setup>
@@ -109,18 +108,24 @@ const getAcionList = async () => {
   }
 }
 
-const handleCurrentChange = () => {}
-
 const reportRef = ref()
 const detailDialogVisible = ref(false)
 // 处理单击汇查看汇报
 const handleCheck = async (row) => {
-  const res = await getHuibaoById({ id: row.id })
-  let resData = JSON.parse(JSON.stringify(res.body))
-  nextTick(() => {
-    reportRef.value.setData(resData)
-    detailDialogVisible.value = true
-  })
+  console.log(reportRef.value)
+  // const res = await getHuibaoById({ id: row.id })
+  // let resData = JSON.parse(JSON.stringify(res.body))
+  // if (resData.content == null) {
+  //   ElMessage({
+  //     type: 'info',
+  //     message: '暂无内容！'
+  //   })
+  // } else {
+  //   nextTick(() => {
+  //     reportRef.value.setData(resData)
+  //     detailDialogVisible.value = true
+  //   })
+  // }
 }
 
 const handleDelete = () => {

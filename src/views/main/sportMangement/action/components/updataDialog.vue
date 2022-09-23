@@ -1,11 +1,21 @@
 <template>
-  <el-dialog :model-value="dialogVisible" :title="title" @close="handleClose" width="60vw">
+  <el-dialog
+    :model-value="dialogVisible"
+    :title="title"
+    @close="handleClose"
+    width="60vw"
+  >
     <el-form ref="formRef" :model="form" :rules="rules">
       <el-row :gutter="24">
         <el-col :span="11">
           <el-form-item label="动作类型：" prop="type">
             <el-select placeholder="请选择" clearable v-model="form.type">
-              <el-option v-for="(item, index) in list" :key="index" :label="item.value" :value="item.value">
+              <el-option
+                v-for="(item, index) in list"
+                :key="index"
+                :label="item.name"
+                :value="item.name"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -18,14 +28,24 @@
         </el-col>
       </el-row>
     </el-form>
-    <Editor ref="wangEditorRef" :status="editorStatus" @sendMsg="getMsg" @submit="submit"></Editor>
+    <Editor
+      ref="wangEditorRef"
+      :status="editorStatus"
+      @sendMsg="getMsg"
+      @submit="submit"
+    ></Editor>
     <!-- <el-button @click="resetForm">测试</el-button> -->
   </el-dialog>
 </template>
 <script setup>
 import { ref, defineProps, defineEmits, watch, reactive, nextTick } from 'vue'
 import Editor from '@/components/editor/index.vue'
-import { addAction, updateAction } from '@/api/sportManagement/action'
+import {
+  addAction,
+  updateAction,
+  getAllActionType
+} from '@/api/sportManagement/action'
+
 import { getToday } from '@/utils/params/date'
 import { ElMessage } from 'element-plus'
 
@@ -40,26 +60,30 @@ const prop = defineProps({
 const emits = defineEmits(['update:dialogVisible', 'updateList'])
 
 // 监视标题
-// watch(
-//   () => prop.dialogStatus,
-//   (newVal, oldVal) => {
-//     if (newVal === 'add') {
-//       resetForm()
-//       title.value = '新增动作'
-//     } else {
-//       // setData(prop.actionData)
-//       title.value = '查看动作'
-//     }
-//   }
-// )
+watch(
+  () => prop.dialogStatus,
+  (newVal, oldVal) => {
+    if (newVal === 'add') {
+      resetForm()
+      title.value = '新增动作'
+    } else {
+      // setData(prop.actionData)
+      title.value = '查看动作'
+    }
+  }
+)
 
 // 监视visible
 watch(
   () => prop.dialogVisible,
   (newVal, oldVal) => {
+    if (newVal) {
+      console.log(newVal)
+      getAllActionTypeList()
+    }
+
     if (prop.actionData) {
       setData(prop.actionData)
-      console.log(prop.actionData)
     }
 
     if (prop.dialogStatus === 'add') {
@@ -79,14 +103,10 @@ const form = reactive({
   type: '',
   name: '',
   content: '',
-  date: '2022-02-28'
+  date: ''
 })
 
-const list = ref([
-  { value: '有氧运动' },
-  { value: '抗阻训练' },
-  { value: '柔韧训练' }
-])
+const list = ref([])
 
 const rules = reactive({
   type: [{ required: true, message: '字段值不可为空' }],
@@ -98,10 +118,20 @@ const getMsg = (msg) => {
   submit()
 }
 
+// 获取所有动作类型
+const getAllActionTypeList = async () => {
+  const res = await getAllActionType()
+  if (res) {
+    list.value = res.body
+  }
+}
+
 const formRef = ref()
 const submit = () => {
+
   formRef.value.validate(async (valid) => {
     if (!valid) return
+
     if (prop.dialogStatus === 'add') {
       createAciton()
     } else if (prop.dialogStatus === 'edit') {

@@ -65,8 +65,8 @@ const changeActive = (item, index) => {
 <style lang="scss" scoped>
 .category {
   background: #fff;
-  width: 100%;
-  height: 100%;
+  width: 250px;
+  height: 73vh;
   display: flex;
   flex-direction: column;
   .header-box {

@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { adviceSportById } from '@/api/sportManagement/actionHuiBao'
+import { adviceFoodById } from '@/api/foodManagement/foodreport.js'
 import { defineProps, defineEmits, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 
@@ -169,8 +169,10 @@ const handleSubmit = async () => {
   }
 }
 
+
+
 defineExpose({
-  setData
+  setData,
 })
 </script>
 <style lang="scss" scoped>

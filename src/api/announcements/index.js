@@ -27,6 +27,14 @@ export function insertNotice(data) {
   })
 }
 
+// 选为轮播图
+export function submitChiose(params) {
+  return request({
+    url: `/notice/setPictures?ids=${params}`,
+    method: 'get'
+  })
+}
+
 // 根据id对公告信息进行删除
 export function deleteNotice(params) {
   return request({
@@ -45,5 +53,3 @@ export function changeNotice(data) {
     data
   })
 }
-
-

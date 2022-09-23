@@ -20,10 +20,55 @@ export function getDrugListForAdm(params) {
   })
 }
 
+// 医生新增药物指导
+export function addDrugForDoc(data) {
+  return request({
+    url: '/drug/manage/insertForDoctor',
+    method: 'post',
+    data
+  })
+}
+
+// 管理员新增饮食指导
+export function addDrugForAdm(data) {
+  return request({
+    url: '/drug/manage/insertForAdmin',
+    method: 'post',
+    data
+  })
+}
+
+// 医生修改饮食指导
+export function updateDrugForDoc(data) {
+  return request({
+    url: '/drug/manage/updateForDoctor',
+    method: 'post',
+    data
+  })
+}
+
+// 管理员修改饮食指导
+export function updateDrugForAdm(data) {
+  return request({
+    url: '/drug/manage/updateForAdmin',
+    method: 'post',
+    data
+  })
+}
+
 // 根据id获取药物指导
 export function getDrugGuideById(params) {
   return request({
     url: '/drug/manage/getById',
+    method: 'get',
+    params
+  })
+}
+
+// 根据id删除药物指导
+export function deleteDrugById(params) {
+  return request({
+    url: '/drug/manage/delete',
     method: 'get',
     params
   })

@@ -59,8 +59,8 @@ const route = useRoute()
 
 // 登录表单
 const form = reactive({
-  account: '150',
-  password: '123456'
+  account: '',
+  password: ''
 })
 
 // 密码框 类型变化
@@ -77,14 +77,25 @@ const submit = () => {
   let data = form
   fromData.append('account', data.account)
   fromData.append('password', data.password)
-  store.dispatch('user/login', fromData).then(() => {
-    ElMessage.success({
-      message: '登录成功',
-      type: 'success',
-      showClose: true,
-      duration: 1000
-    })
-    router.push('/')
+  store.dispatch('user/login', fromData).then((res) => {
+    console.log(res)
+
+    if (res === true) {
+      ElMessage.success({
+        message: '登录成功',
+        type: 'success',
+        showClose: true,
+        duration: 1000
+      })
+      router.push('/')
+    } else {
+      ElMessage({
+        message: res,
+        type: 'error',
+        showClose: true,
+        duration: 1000
+      })
+    }
   })
 }
 </script>

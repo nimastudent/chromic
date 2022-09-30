@@ -30,19 +30,24 @@ const mutations = {
 // actions
 const actions = {
   // login by login.vue
-  async login({ commit, dispatch }, params) {
-    const res = await userlogin(params)
-    if (res.success) {
+  login({ commit, dispatch }, params) {
+    return new Promise(async (resolve, reject) => {
+      const res = await userlogin(params)
       console.log(res)
-      let role = res.body.role[0]
-      commit('tokenChange', res.body.JSESSIONID)
-      commit('saveRole', role)
-      sessionStorage.setItem('cookie', res.body.JSESSIONID)
-      sessionStorage.setItem('name', res.body.username)
-      if (role === 'staff') {
-        sessionStorage.setItem('doctorId', res.body.id)
+      if (res.success) {
+        let role = res.body.role[0]
+        commit('tokenChange', res.body.JSESSIONID)
+        commit('saveRole', role)
+        sessionStorage.setItem('cookie', res.body.JSESSIONID)
+        sessionStorage.setItem('name', res.body.username)
+        if (role === 'staff') {
+          sessionStorage.setItem('doctorId', res.body.id)
+        }
+        resolve(true)
+      } else {
+        resolve(res.body)
       }
-    }
+    })
   },
   // get user info after user logined
   getInfo({ commit }, params) {

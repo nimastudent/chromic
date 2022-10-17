@@ -1,4 +1,8 @@
 import { userlogin, logout } from '@/api/auth/user'
+import {addRoutes} from '@/router/index'
+import router from '@/router/index'
+
+
 
 const state = () => ({
   token: '', // 登录token
@@ -43,6 +47,7 @@ const actions = {
         if (role === 'staff') {
           sessionStorage.setItem('doctorId', res.body.id)
         }
+        addRoutes()
         resolve(true)
       } else {
         resolve(res.body)
@@ -64,6 +69,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout().then((res) => {
         sessionStorage.setItem('cookie', '')
+        router.go()
         resolve(res)
       })
     })

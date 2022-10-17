@@ -21,13 +21,13 @@ const route = [
         ),
         meta: { title: '饮食汇报' }
       },
-      {
-        path: 'drug',
-        component: createNameComponent(() =>
-          import('@/views/main/foodManagement/drug/index.vue')
-        ),
-        meta: { title: '药物推荐' }
-      }
+      // {
+      //   path: 'drug',
+      //   component: createNameComponent(() =>
+      //     import('@/views/main/foodManagement/drug/index.vue')
+      //   ),
+      //   meta: { title: '药物推荐' }
+      // }
     ]
   }
 ]

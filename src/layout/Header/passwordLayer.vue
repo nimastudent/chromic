@@ -1,103 +1,173 @@
 <template>
   <Layer :layer="layer" @confirm="submit" ref="layerDom">
     <el-form
-      :model="form"
+      :model="formData"
+      ref="vForm"
       :rules="rules"
-      ref="ruleForm"
-      label-width="120px"
-      style="margin-right: 30px"
+      label-position="left"
+      label-width="80px"
+      size="medium"
+      @submit.native.prevent
     >
-      <el-form-item label="用户名：" prop="name"> {{ name }} </el-form-item>
-      <el-form-item label="原密码：" prop="old">
-        <el-input
-          v-model="form.old"
-          placeholder="请输入原密码"
-          show-password
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="新密码：" prop="new">
-        <el-input
-          v-model="form.new"
-          placeholder="请输入新密码"
-          show-password
-        ></el-input>
-      </el-form-item>
-    </el-form>
-  </Layer>
+      <el-row>
+        <el-col :span="10" :offset="1" class="grid-cell">
+          <el-form-item label="姓名" prop="name" class="required">
+            <el-input v-model="formData.name" type="text" clearable></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10" :push="2" class="grid-cell">
+          <el-form-item label="账号" prop="account" class="required">
+            <el-input
+              v-model="formData.account"
+              type="text"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10" :offset="1" class="grid-cell">
+          <el-form-item label="注册日期" prop="date">
+            <el-input
+              v-model="formData.date"
+              :disabled="true"
+              type="text"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10" :push="2" class="grid-cell">
+          <el-form-item label="机构" prop="organizationName" class="required">
+            <el-select v-model="formData.organizationName">
+              <el-option
+                v-for="(item, index) in orgList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10" :push="1" class="grid-cell">
+          <el-form-item label="新密码" prop="password">
+            <el-input
+              v-model="formData.password"
+              type="text"
+              clearable
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12" class="grid-cell"> </el-col>
+      </el-row> </el-form
+  ></Layer>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue'
+<script setup>
+import { reactive, onMounted, ref, watch, getCurrentInstance } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex'
-import { passwordChange } from '@/api/user'
 import Layer from '@/components/layer/index.vue'
-export default defineComponent({
-  components: {
-    Layer
-  },
-  props: {
-    layer: {
-      type: Object,
-      default: () => {
-        return {
-          show: false,
-          title: '',
-          showButton: true
-        }
+import {
+  getDocInfo,
+  getOrgList,
+  updateDocInfo
+} from '@/api/systemManage/adminManage'
+
+const props = defineProps({
+  layer: {
+    type: Object,
+    default: () => {
+      return {
+        show: false,
+        title: '',
+        showButton: true
       }
-    }
-  },
-  setup(props, ctx) {
-    const ruleForm = ref(null)
-    const layerDom = ref(null)
-    const store = useStore()
-    let form = ref({
-      userId: '123465',
-      name: '',
-      old: '',
-      new: ''
-    })
-    const rules = {
-      old: [{ required: true, message: '请输入原密码', trigger: 'blur' }],
-      new: [{ required: true, message: '请输入新密码', trigger: 'blur' }]
-    }
-    const name = sessionStorage.getItem('name')
-    function submit() {
-      if (ruleForm.value) {
-        ruleForm.value.validate((valid) => {
-          if (valid) {
-            let params = {
-              id: form.value.userId,
-              old: form.value.old,
-              new: form.value.new
-            }
-            passwordChange(params).then((res) => {
-              ElMessage({
-                type: 'success',
-                message: '密码修改成功，即将跳转到登录页面'
-              })
-              layerDom.value && layerDom.value.close()
-              setTimeout(() => {
-                store.dispatch('user/loginOut')
-              }, 2000)
-            })
-          } else {
-            return false
-          }
-        })
-      }
-    }
-    return {
-      form,
-      rules,
-      layerDom,
-      ruleForm,
-      submit,
-      name
     }
   }
 })
+
+const orgList = ref([])
+const formData = reactive({
+  name: '',
+  account: '',
+  date: '',
+  organizationName: '',
+  password: ''
+})
+
+const rules = {
+  name: [
+    {
+      required: true,
+      message: '字段值不可为空'
+    },
+    {
+      pattern: /^[一-龥]+$/,
+      trigger: ['blur', 'change'],
+      message: ''
+    }
+  ],
+  account: [
+    {
+      required: true,
+      message: '字段值不可为空'
+    }
+  ],
+  organizationName: [
+    {
+      required: true,
+      message: '字段值不可为空'
+    }
+  ]
+}
+
+watch(
+  () => props.layer,
+  (newVal, oldVal) => {
+    console.log(newVal)
+  }
+)
+
+onMounted(() => {
+  getOrgList().then((res) => {
+    orgList.value = res.body
+  })
+  getDocInfo().then((res) => {
+    const data = JSON.parse(JSON.stringify(res.body))
+    const keys = Object.keys(data)
+    keys.forEach((item) => {
+      formData[item] = data[item]
+    })
+  })
+})
+
+const layerDom = ref(null)
+
+const instance = getCurrentInstance()
+const submitForm = () => {}
+
+const resetForm = () => {
+  instance.ctx.$refs['vForm'].resetFields()
+}
+const submit = () => {
+  instance.ctx.$refs['vForm'].validate((valid) => {
+    if (!valid) return
+    //TODO: 提交表单
+
+    if (!formData.password) {
+      delete formData.password
+    }
+    updateDocInfo(formData).then((res) => {
+      if (res.success) {
+        ElMessage.success('更新成功！')
+        layerDom.value.close()
+      }
+    })
+  })
+}
 </script>
 
 <style lang="scss" scoped></style>

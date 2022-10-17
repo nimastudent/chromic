@@ -3,24 +3,50 @@
     :model-value="logDialogVisible"
     title="日志"
     @close="handleClose"
-    width="40vw"
-  ></el-dialog>
+    width="800px"
+  >
+    <el-table :data="tableData" style="width: 100%" v-loading="listLoading">
+      <el-table-column prop="id" label="ID" width="80" />
+      <el-table-column prop="content" label="内容" />
+      <el-table-column prop="date" label="日期" width="150" />
+    </el-table>
+
+    <Pagination
+      v-model:pageSize="queryForm.pageSize"
+      v-model:pageNum="queryForm.pageNum"
+      :total="queryForm.total"
+      @updateList="getList"
+    />
+  </el-dialog>
 </template>
 
 <script setup>
 import { getAllLog } from '@/api/systemManage/adminManage'
-import { defineProps } from 'vue'
+import { defineProps, reactive, ref } from 'vue'
+import Pagination from '@/components/pagination/index.vue'
 
 const props = defineProps({
   logDialogVisible: Boolean
 })
 
+const listLoading = ref(false)
+const queryForm = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  total: 0
+})
+
 const emits = defineEmits(['update:logDialogVisible'])
 
-
-// 这个接口可能有问题 暂时 不写这个模块了  系统设置 基本上完成了  你可以 自己建一个项目 按照这种思路 来一遍   然后 自己看下 git  学会git 的使用方法
+const tableData = ref([])
 const getList = () => {
-  getAllLog().then((res) => console.log(res))
+  const { pageNum, pageSize } = queryForm
+  listLoading.value = true
+  getAllLog({ pageNum, pageSize }).then((res) => {
+    tableData.value = res.body.content
+    queryForm.total = res.body.totalSize
+    listLoading.value = false
+  })
 }
 
 const handleClose = () => {

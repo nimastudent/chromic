@@ -25,40 +25,49 @@ import adminManage from './modules/adminManage'
 import healthAssessment from './modules/healthAssessment'
 import interactive from './modules/interactive'
 import announcements from './modules/announcements'
+import { reactive } from 'vue'
 
-let modules = [...System]
-
-// const routes = modules
-
-let routes = [
+let modules = reactive([
   ...System,
-  ...Dashboard,
+   ...Dashboard,
   ...patientManagement,
   ...diseaseManagement,
   ...sportManagement,
   ...foodManagement,
-  ...interactive,
+  ...healthAssessment,
+])
+
+// const routes = modules
+
+//需要权限的页面
+
+let routes = [
+  // ...interactive,
   ...announcements,
   ...adminManage,
-  ...healthAssessment
+
 ]
+
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes:modules
 })
 
 // 动态路由的权限新增，供登录后调用
-// export function addRoutes() {
-//   console.log('this is router')
-//   if (store.state.user.role === 'admin') {
-//     asyncRoutes = [...asyncRoutes, ...adminManage]
-//   }
-//   asyncRoutes.forEach((item) => {
-//     modules.push(item)
-//     router.addRoute(item)
-//   })
-// }
+export function addRoutes() {
+  console.log('modules',router)
+ 
+
+  if (store.state.user.role === 'admin') {
+    routes.forEach( item => {
+      modules.push(item)
+      router.addRoute(item)
+    })
+  }
+}
+
+
 
 // 重置匹配所有路由的解决方案，todo
 // function eachData(data, type) {

@@ -8,11 +8,11 @@
       </el-row>
       <el-row>
         <el-button type="primary" @click="getList" style="margin-left: 10px"
-          >搜素</el-button
+          >搜索</el-button
         >
       </el-row>
     </el-row>
-    
+
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -112,20 +112,19 @@ const reportRef = ref()
 const detailDialogVisible = ref(false)
 // 处理单击汇查看汇报
 const handleCheck = async (row) => {
-  console.log(reportRef.value)
-  // const res = await getHuibaoById({ id: row.id })
-  // let resData = JSON.parse(JSON.stringify(res.body))
-  // if (resData.content == null) {
-  //   ElMessage({
-  //     type: 'info',
-  //     message: '暂无内容！'
-  //   })
-  // } else {
-  //   nextTick(() => {
-  //     reportRef.value.setData(resData)
-  //     detailDialogVisible.value = true
-  //   })
-  // }
+  const res = await getHuibaoById({ id: row.id })
+  let resData = JSON.parse(JSON.stringify(res.body))
+  if (resData.content == null) {
+    ElMessage({
+      type: 'info',
+      message: '暂无内容！'
+    })
+  } else {
+    nextTick(() => {
+      reportRef.value.setData(resData)
+      detailDialogVisible.value = true
+    })
+  }
 }
 
 const handleDelete = () => {

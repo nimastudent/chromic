@@ -36,5 +36,8 @@ export const options = [
 ]
 
 export function addDoc() {
+  const hasDoc = options.find(item => item.label === '所属医生')
+  if(!hasDoc){
   options.splice(2, 1, { label: '所属医生', prop: 'doctorName', width: 90 })
+  }
 }

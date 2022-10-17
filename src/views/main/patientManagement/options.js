@@ -40,6 +40,11 @@ export let options = [
     prop: 'organization'
   },
   {
+    label: '步数',
+    prop: 'step',
+    width:80
+  },
+  {
     label: '注册时间',
     prop: 'registerDate'
   },
@@ -63,5 +68,11 @@ export let options = [
 ]
 
 export function roleAddDoc() {
-  options.splice(7, 0, { label: '所属医生', prop: 'doctorName', width: 90 })
+  const hasDoc = options.find(item => item.label === '所属医生')
+  console.log(hasDoc);
+  
+  if(!hasDoc){
+    options.splice(7, 0, { label: '所属医生', prop: 'doctorName', width: 90 })
+
+  }
 }

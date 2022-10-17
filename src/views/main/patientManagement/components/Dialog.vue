@@ -1,34 +1,62 @@
 <template>
   <el-dialog :model-value="dialogVisible" :title="title" @close="handleClose">
     <!-- 原表单页面 -->
-    <el-form :model="form" ref="vForm" :rules="rules" label-position="left" size="small" @submit.prevent>
+    <el-form
+      :model="form"
+      ref="vForm"
+      :rules="rules"
+      label-position="left"
+      size="small"
+      @submit.prevent
+    >
       <!-- 第一行（姓名、电话） -->
       <el-row :gutter="20" type="flex" justify="space-around">
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 10px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 10px"
+            >
               <div class="font">姓名</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div :model="form" :rules="reles" class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div :model="form" :rules="reles" class="table-cell">
             <el-form-item prop="name">
-              <el-input type="text" clearable v-model="form.name" maxlength="5" placeholder="请输入姓名"></el-input>
+              <el-input
+                type="text"
+                clearable
+                v-model="form.name"
+                maxlength="5"
+                placeholder="请输入姓名"
+              ></el-input>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 10px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 10px"
+            >
               <div class="font">电话</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="telephone" class="required">
-              <el-input v-model="form.telephone" type="text" clearable maxlength="11" placeholder="请输入电话"></el-input>
+              <el-input
+                v-model="form.telephone"
+                type="text"
+                clearable
+                maxlength="11"
+                placeholder="请输入电话"
+              ></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -38,35 +66,63 @@
       <el-row :gutter="20" type="flex" justify="space-around">
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 30px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 30px"
+            >
               <div class="font">性别</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="sex">
               <el-radio-group v-model="form.sex">
-                <el-radio v-for="(item, index) in sexOptions" :key="index" :label="item.value" :disabled="item.disabled" style="
+                <el-radio
+                  v-for="(item, index) in sexOptions"
+                  :key="index"
+                  :label="item.value"
+                  :disabled="item.disabled"
+                  style="
                      {
                       display: inline;
                     }
-                  ">{{ item.label }}</el-radio>
+                  "
+                  >{{ item.label }}</el-radio
+                >
               </el-radio-group>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 30px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 30px"
+            >
               <div class="font">出生日期</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="birthday">
-              <el-date-picker v-model="form.birthday" type="date" format="YYYY/MM/DD" value-format="YYYY-MM-DD" :disabled-date="pickerOptions" clearable style="width: 100%" placeholder="请选择出生日期"></el-date-picker>
+              <el-date-picker
+                v-model="form.birthday"
+                type="date"
+                format="YYYY/MM/DD"
+                value-format="YYYY-MM-DD"
+                :disabled-date="pickerOptions"
+                clearable
+                style="width: 100%"
+                placeholder="请选择出生日期"
+              ></el-date-picker>
             </el-form-item>
           </div>
         </el-col>
@@ -76,29 +132,53 @@
       <el-row :gutter="20" type="flex" justify="space-around">
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 31px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 31px"
+            >
               <div class="font">身高</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="height">
-              <el-input v-model="form.height" type="text" clearable maxlength="3" placeholder="请输入身高(cm)"></el-input>
+              <el-input
+                v-model="form.height"
+                type="text"
+                clearable
+                maxlength="3"
+                placeholder="请输入身高(cm)"
+              ></el-input>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 31px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 31px"
+            >
               <div class="font">体重</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="weight">
-              <el-input v-model="form.weight" type="text" clearable maxlength="3" placeholder="请输入体重(kg)"></el-input>
+              <el-input
+                v-model="form.weight"
+                type="text"
+                clearable
+                maxlength="3"
+                placeholder="请输入体重(kg)"
+              ></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -108,31 +188,57 @@
       <el-row :gutter="20" type="flex" justify="space-around">
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 30px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 30px"
+            >
               <div class="font">机构</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="oid" class="required">
               <el-select v-model="form.oid" class="full-width-input" clearable>
-                <el-option v-for="(item, index) in orgList" :key="index" :label="item.name" :value="item.id" :disabled="item.disabled"></el-option>
+                <el-option
+                  v-for="(item, index) in orgList"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                  :disabled="item.disabled"
+                ></el-option>
               </el-select>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" v-if="role === 'admin'">
+            <div
+              class="static-content-item"
+              style="padding-left: 10px; padding-right: 40px"
+            >
               <div class="font">医生</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="table-cell">
-            <el-select v-if="role === 'admin'" v-model="form.did" class="full-width-input" clearable>
-              <el-option v-for="(item, index) in docList" :key="index" :label="item.name" :value="item.id" :disabled="item.disabled"></el-option>
+            <el-select
+              v-if="role === 'admin'"
+              v-model="form.did"
+              class="full-width-input"
+              clearable
+            >
+              <el-option
+                v-for="(item, index) in docList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+                :disabled="item.disabled"
+              ></el-option>
             </el-select>
           </div>
         </el-col>
@@ -142,29 +248,59 @@
       <el-row :gutter="20" type="flex" justify="space-around">
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 30px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 30px"
+            >
               <div class="font">会员开始日期</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="startDate">
-              <el-date-picker v-model="form.startDate" type="date" class="full-width-input" format="YYYY/MM/DD" value-format="YYYY-MM-DD" clearable style="width: 100%" placeholder="请选择会员开始日期"></el-date-picker>
+              <el-date-picker
+                v-model="form.startDate"
+                type="date"
+                class="full-width-input"
+                format="YYYY/MM/DD"
+                value-format="YYYY-MM-DD"
+                clearable
+                style="width: 100%"
+                placeholder="请选择会员开始日期"
+              ></el-date-picker>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="table-cell">
-            <div class="static-content-item" style="padding-left: 32px; padding-right: 30px">
+            <div
+              class="static-content-item"
+              style="padding-left: 32px; padding-right: 30px"
+            >
               <div class="font">会员结束日期</div>
             </div>
           </div>
         </el-col>
         <el-col :span="8">
-          <div class="table-cell" style="padding-left: 10px; padding-right: 40px">
+          <div
+            class="table-cell"
+            style="padding-left: 10px; padding-right: 40px"
+          >
             <el-form-item label="" prop="endDate">
-              <el-date-picker v-model="form.endDate" type="date" class="full-width-input" format="YYYY/MM/DD" value-format="YYYY-MM-DD" clearable style="width: 100%" placeholder="请选择会员结束日期"></el-date-picker>
+              <el-date-picker
+                v-model="form.endDate"
+                type="date"
+                class="full-width-input"
+                format="YYYY/MM/DD"
+                value-format="YYYY-MM-DD"
+                clearable
+                style="width: 100%"
+                placeholder="请选择会员结束日期"
+              ></el-date-picker>
             </el-form-item>
           </div>
         </el-col>
@@ -200,7 +336,6 @@ const prop = defineProps({
   dialogStatus: String
 })
 const emits = defineEmits(['update:dialogVisible', 'updateList'])
-
 const role = prop.role
 
 // 性别选项

@@ -1,12 +1,12 @@
 <template>
-  <div class="box">我是首页</div>
+  <!-- <div class="box">我是首页</div>
 
   <div>
     <button @click="webScoketConnTest">testconne</button>
     <button @click="sendData">send msg</button>
 
    <img src="" alt="" srcset="">
-  </div>
+  </div> -->
 </template>
 
 <script setup>

@@ -20,6 +20,24 @@ export function addDoc(data) {
   })
 }
 
+
+//获取医生信息
+export function getDocInfo(){
+  return request({
+    url: '/user',
+    method: 'get',
+  })
+}
+
+// 修改医生个人信息
+export function updateDocInfo(data){
+  return request({
+    url: '/update/info',
+    method: 'post',
+    data
+  })
+}
+
 //修改医生信息
 export function updateDoc(data) {
   return request({

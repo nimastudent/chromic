@@ -1,7 +1,7 @@
 <template>
-  <div><span>血液状态:</span><input ref="stateRef" type="file" /></div>
+  <!-- <div><span>血液状态:</span><input ref="stateRef" type="file" /></div>
 
-  <div><span>血生化:</span><input ref="rawRef" type="file" /></div>
+  <div><span>血生化:</span><input ref="rawRef" type="file" /></div> -->
 
   <span>血液状态:</span>
   <el-upload

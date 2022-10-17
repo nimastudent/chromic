@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="dialogVisible" @close="handleClose" width="600px">
+  <el-dialog :model-value="dialogVisible" @close="handleClose" width="1000px">
     <el-space wrap>
       <el-table :data="dayReportList.xueYa" border height="400px">
         <el-table-column prop="date" label="日期" width="150" />
@@ -9,6 +9,11 @@
       <el-table :data="dayReportList.xueTang" border height="400px">
         <el-table-column prop="date" label="日期" width="150" />
         <el-table-column prop="sweet" label="血糖" />
+      </el-table>
+
+      <el-table :data="dayReportList.xinLv" border height="400px">
+        <el-table-column prop="date" label="日期" width="150" />
+        <el-table-column prop="rate" label="心率" />
       </el-table>
     </el-space>
   </el-dialog>

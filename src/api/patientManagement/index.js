@@ -56,6 +56,34 @@ export function getDayXueYaReport(params) {
   })
 }
 
+// 医生查看患者心率记录
+export function getDayXinLvReport(params) {
+  return request({
+    url: '/health/all/quiet',
+    method: 'get',
+    params
+  })
+}
+
+// 根据患者id获取历史步数
+export function getUseStep(params){
+  return request({
+    url: '/step/get',
+    method: 'get',
+    params
+  })
+}
+
+//导出患者步数
+export function exportUserStep(params){
+  return request({
+    url: '/step/export',
+    method: 'get',
+    params
+  })
+}
+
+
 // 医生添加患者
 export function addPaientByStaff(data) {
   return request({

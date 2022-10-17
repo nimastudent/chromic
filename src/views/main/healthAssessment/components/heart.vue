@@ -49,15 +49,14 @@
             name="electricity"
             :action="uploadUrl"
             :data="formData"
-            list-type="picture-card"
             show-file-list
             :limit="1"
             :auto-upload="false"
             :with-credentials="true"
             :on-success="handleSuccess"
           >
-            <template #default><i class="el-icon-plus"></i></template
-          ></el-upload>
+            <el-button>点我上传 </el-button>
+          </el-upload>
         </el-form-item>
       </el-col>
     </el-row>

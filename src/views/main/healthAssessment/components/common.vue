@@ -1,6 +1,5 @@
 <template>
   <div class="common-cotianer">
-    {{ activeUrl }}
     <form-create
       ref="cfrom"
       v-model="fApi"
@@ -8,7 +7,6 @@
       :option="option"
     ></form-create>
     <el-button @click="mySubmit" class="my-btn" type="primary">提交</el-button>
-    <el-button @click="atest">test</el-button>
   </div>
 </template>
 

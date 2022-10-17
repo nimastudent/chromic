@@ -44,9 +44,7 @@ const actions = {
         commit('saveRole', role)
         sessionStorage.setItem('cookie', res.body.JSESSIONID)
         sessionStorage.setItem('name', res.body.username)
-        if (role === 'staff') {
           sessionStorage.setItem('doctorId', res.body.id)
-        }
         addRoutes()
         resolve(true)
       } else {

@@ -81,6 +81,29 @@ const getList = () => {
 const handleExport = () => {
   exportUserStep({ pid: prop.patientId }).then((res) => {
     console.log(res)
+    dataURLtoBlob(res.body, prop.patientId)
   })
+}
+
+const dataURLtoBlob = (base64result, filename) => {
+  var raw = window.atob(base64result)
+  var uInt8Array = new Uint8Array(base64result.length)
+  for (var i = 0; i < raw.length; i++) {
+    uInt8Array[i] = raw.charCodeAt(i)
+  }
+
+  const link = document.createElement('a')
+  const blob = new Blob([uInt8Array], {
+    type: 'application/vnd.ms-excel'
+  })
+
+  link.style.display = 'none'
+  link.href = URL.createObjectURL(blob)
+  link.setAttribute('download', filename + '.xls')
+
+  document.body.appendChild(link)
+  link.click()
+
+  document.body.removeChild(link)
 }
 </script>

@@ -17,10 +17,6 @@ export const options = [
       width: 1
     },
     {
-      label: '动作名称',
-      prop: 'actionName'
-    },
-    {
       label: '建议',
       prop: 'advice'
     },

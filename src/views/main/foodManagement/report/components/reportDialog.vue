@@ -46,13 +46,13 @@
         >{{ tableData.doctorName }}</el-descriptions-item
       >
       <el-descriptions-item
-        label="汇报动作"
+        label="汇报标题"
         label-align="center"
         align="center"
         label-class-name="my-label"
         class-name="my-content"
         width="200px"
-        >{{ tableData.actionName }}</el-descriptions-item
+        >{{ tableData.title }}</el-descriptions-item
       >
       <el-descriptions-item
         label="医生建议"
@@ -169,10 +169,8 @@ const handleSubmit = async () => {
   }
 }
 
-
-
 defineExpose({
-  setData,
+  setData
 })
 </script>
 <style lang="scss" scoped>

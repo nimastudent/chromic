@@ -63,6 +63,7 @@ export default defineComponent({
       showButton: true
     })
     const UserInfoDialogVisiable = ref(false)
+    
     const name = sessionStorage.getItem('name')
     const isCollapse = computed(() => store.state.app.isCollapse)
     // isCollapse change to hide/show the sidebar

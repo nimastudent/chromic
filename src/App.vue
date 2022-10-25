@@ -15,12 +15,12 @@ export default defineComponent({
     }
   },
   mounted() {
-    window.onbeforeunload = function (e) {
-      const storage = window.localStorage
-      const sesssion = window.sessionStorage
-      storage.clear()
-      sesssion.clear()
-    }
+    // window.onbeforeunload = function (e) {
+    //   const storage = window.localStorage
+    //   const sesssion = window.sessionStorage
+    //   storage.clear()
+    //   sesssion.clear()
+    // }
   }
 })
 </script>

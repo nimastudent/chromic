@@ -79,7 +79,6 @@ const submit = () => {
   fromData.append('password', data.password)
   store.dispatch('user/login', fromData).then((res) => {
     console.log(res)
-
     if (res === true) {
       ElMessage.success({
         message: '登录成功',

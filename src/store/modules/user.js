@@ -44,7 +44,7 @@ const actions = {
         commit('saveRole', role)
         sessionStorage.setItem('cookie', res.body.JSESSIONID)
         sessionStorage.setItem('name', res.body.username)
-          sessionStorage.setItem('doctorId', res.body.id)
+        sessionStorage.setItem('doctorId', res.body.id)
         addRoutes()
         resolve(true)
       } else {

@@ -16,8 +16,12 @@ export let options = [
     width: 1
   },
   {
-    label: '已开指导',
-    prop: 'isDrug'
+    label: '汇报时间',
+    prop: 'reportDate'
+  },
+  {
+    label: '是否完成',
+    prop: 'isFinish'
   },
   {
     label: '操作',

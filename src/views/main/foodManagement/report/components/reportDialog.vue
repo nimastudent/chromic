@@ -122,7 +122,7 @@ const props = defineProps({
   detailDialogVisible: Boolean
 })
 
-const emits = defineEmits(['update:detailDialogVisible'])
+const emits = defineEmits(['update:detailDialogVisible', 'getList'])
 
 const handleClose = () => {
   emits('update:detailDialogVisible', false)
@@ -158,7 +158,7 @@ const handleClickAdvice = () => {
 }
 const handleSubmit = async () => {
   console.log(form)
-  const res = await adviceSportById(form.value)
+  const res = await adviceFoodById(form.value)
   if (res) {
     ElMessage({
       message: '提交成功！',

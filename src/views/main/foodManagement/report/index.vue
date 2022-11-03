@@ -45,6 +45,7 @@
     <report-detail
       ref="reportRef"
       v-model:detailDialogVisible="detailDialogVisible"
+      @updateList="getList"
     ></report-detail>
   </el-card>
 </template>
@@ -77,6 +78,8 @@ const tableData = ref([])
 const loading = ref(false)
 const getList = () => {
   loading.value = true
+  console.log('get')
+
   if (role === 'admin') {
     // addItem()
     getListForAdm()

@@ -3,7 +3,8 @@
     <el-space wrap>
       <el-table :data="dayReportList.xueYa" border height="400px">
         <el-table-column prop="date" label="日期" width="150" />
-        <el-table-column prop="sweet" label="血压" />
+        <el-table-column prop="blood1" label="收缩压" />
+        <el-table-column prop="blood2" label="舒张压" />
       </el-table>
 
       <el-table :data="dayReportList.xueTang" border height="400px">
@@ -26,7 +27,7 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 const prop = defineProps({
   dialogVisible: Boolean,
   patientId: Number,
-  dayReportList: Array
+  dayReportList: Object
 })
 
 const emits = defineEmits(['update:dialogVisible'])

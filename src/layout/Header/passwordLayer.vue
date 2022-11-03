@@ -2,7 +2,7 @@
   <Layer :layer="layer" @confirm="submit" ref="layerDom">
     <el-form
       :model="formData"
-      ref="vForm"
+      ref="ruleFormRef"
       :rules="rules"
       label-position="left"
       label-width="80px"
@@ -149,14 +149,13 @@ const layerDom = ref(null)
 const instance = getCurrentInstance()
 const submitForm = () => {}
 
-const resetForm = () => {
-  instance.ctx.$refs['vForm'].resetFields()
-}
 const submit = () => {
-  instance.ctx.$refs['vForm'].validate((valid) => {
-    if (!valid) return
-    //TODO: 提交表单
-
+  if (
+    formData.name &&
+    formData.account &&
+    formData.date &&
+    formData.organizationName
+  ) {
     if (!formData.password) {
       delete formData.password
     }
@@ -166,7 +165,9 @@ const submit = () => {
         layerDom.value.close()
       }
     })
-  })
+  } else {
+    ElMessage.error('请填写表单!')
+  }
 }
 </script>
 

@@ -19,13 +19,15 @@
         >{{ tableData.patientName }}</el-descriptions-item
       >
       <el-descriptions-item
-        label="电话号码"
+        label="汇报内容"
         label-align="center"
         align="center"
         label-class-name="my-label"
         class-name="my-content"
         width="200px"
-        >{{ tableData.telephone }}</el-descriptions-item
+        ><p>
+          {{ tableData.content.length > 0 ? tableData.content : '暂无内容' }}
+        </p></el-descriptions-item
       >
       <el-descriptions-item
         label="汇报时间"
@@ -74,12 +76,16 @@
         <el-image
           style="width: 100px; height: 100px"
           :src="
-            tableData.pictures[0].picture ? tableData.pictures[0].picture : ''
+            tableData.pictures.length > 0 ? tableData.pictures[0].picture : ''
           "
           :preview-src-list="srcList ? srcList : []"
           :initial-index="4"
           fit="cover"
-        />
+        >
+          <template #error>
+            <div class="image-slot">暂无内容</div>
+          </template></el-image
+        >
       </el-descriptions-item>
       <el-descriptions-item
         label="影像"
@@ -89,7 +95,9 @@
         class-name="my-content"
         width="200px"
       >
-        <video width="250" :src="tableData.video" controls></video>
+        <div>
+          <video class="video-class" :src="tableData.videoUrl" controls></video>
+        </div>
       </el-descriptions-item>
     </el-descriptions>
 
@@ -150,6 +158,7 @@ const setData = (data) => {
     })
     srcList.value = newArr
   }
+  console.log(tableData)
 }
 
 const handleClickAdvice = () => {
@@ -179,5 +188,11 @@ defineExpose({
 }
 .my-content {
   background: var(--el-color-danger-light-9);
+}
+
+.video-class {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 </style>

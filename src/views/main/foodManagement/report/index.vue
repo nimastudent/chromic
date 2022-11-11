@@ -128,7 +128,7 @@ const handleCheck = async (row) => {
   }
 }
 
-const handleDelete = () => {
+const handleDelete = (row) => {
   ElMessageBox.confirm('请确认是否删除该条记录', '警告', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',

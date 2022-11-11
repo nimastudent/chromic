@@ -57,10 +57,11 @@ const store = $store
 const router = useRouter()
 const route = useRoute()
 
+// 13850626850  123456
 // 登录表单
 const form = reactive({
-  account: '',
-  password: ''
+  account: '13850626850',
+  password: '123456'
 })
 
 // 密码框 类型变化

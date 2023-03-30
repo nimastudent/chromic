@@ -23,7 +23,8 @@ import sportManagement from './modules/sportManage'
 import foodManagement from './modules/foodManagement'
 import adminManage from './modules/adminManage'
 import healthAssessment from './modules/healthAssessment'
-import interactive from './modules/interactive'
+// import interactive from './modules/interactive'
+import ruleManagement from './modules/ruleManage'
 import announcements from './modules/announcements'
 
 let modules = [...System]
@@ -37,8 +38,9 @@ let routes = [
   ...diseaseManagement,
   ...sportManagement,
   ...foodManagement,
-  ...interactive,
+  // ...interactive,
   ...announcements,
+  ...ruleManagement,
   ...adminManage,
   ...healthAssessment
 ]

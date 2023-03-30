@@ -28,7 +28,9 @@ export default ({ command }) => {
       proxy: {
         '/api': {
           // 后台地址
-          target: 'https://www.aikeyunkang.top:8081/',
+
+          target: 'https://www.aikeyunkang.top:443/',
+          // target: '',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(/^\/api/, '')

@@ -1,5 +1,4 @@
 import request from '../request'
-
 // 患者管理
 
 // 获取所有患者（医生）

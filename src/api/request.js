@@ -3,6 +3,7 @@ import { ElMessage } from 'element-plus'
 
 // https://www.aikeyunkang.top:8081
 const baseURL = '/api'
+// const baseURL = 'https://192.168.88.8:443'
 
 const service = axios.create({
   baseURL,

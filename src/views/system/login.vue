@@ -59,8 +59,8 @@ const route = useRoute()
 
 // 登录表单
 const form = reactive({
-  account: '',
-  password: ''
+  account: '181',
+  password: '123456'
 })
 
 // 密码框 类型变化

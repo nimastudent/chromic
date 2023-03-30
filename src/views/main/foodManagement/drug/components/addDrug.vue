@@ -139,7 +139,7 @@ const getPatient = async (did) => {
     nextTick(() => {
       patientList.value = res.body
     })
-    console.log(res)
+    console.log('res', res)
   }
 }
 

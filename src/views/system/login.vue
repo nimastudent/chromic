@@ -57,6 +57,7 @@ const store = $store
 const router = useRouter()
 const route = useRoute()
 
+// 13850626850  123456
 // 登录表单
 const form = reactive({
   account: '181',
@@ -79,7 +80,6 @@ const submit = () => {
   fromData.append('password', data.password)
   store.dispatch('user/login', fromData).then((res) => {
     console.log(res)
-
     if (res === true) {
       ElMessage.success({
         message: '登录成功',

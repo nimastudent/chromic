@@ -1,5 +1,5 @@
-<template>
-  <div class="box">我是首页</div>
+<!-- <template> -->
+  <!-- <div class="box">我是首页</div>
 
   <div></div>
 </template>

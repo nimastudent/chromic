@@ -10,7 +10,7 @@
       </el-row>
       <el-row>
         <el-button type="primary" @click="getList" style="margin-left: 10px"
-          >搜素</el-button
+          >搜索</el-button
         >
       </el-row>
     </el-row>

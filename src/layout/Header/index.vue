@@ -23,9 +23,10 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <!-- <el-dropdown-item @click="showPasswordLayer"
-                >修改密码</el-dropdown-item
-              > -->
+              <el-dropdown-item @click="showPasswordLayer"
+                >修改个人信息</el-dropdown-item
+              >
+
               <el-dropdown-item @click="loginOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive } from 'vue'
+import { defineComponent, computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import FullScreen from './functionList/fullscreen.vue'
@@ -61,6 +62,8 @@ export default defineComponent({
       show: false,
       showButton: true
     })
+    const UserInfoDialogVisiable = ref(false)
+    
     const name = sessionStorage.getItem('name')
     const isCollapse = computed(() => store.state.app.isCollapse)
     // isCollapse change to hide/show the sidebar
@@ -86,7 +89,8 @@ export default defineComponent({
       opendStateChange,
       loginOut,
       showPasswordLayer,
-      name
+      name,
+      UserInfoDialogVisiable
     }
   }
 })

@@ -97,7 +97,6 @@ watch(
   () => prop.editData,
   (newVal, oldVal) => {
     // let data = JSON.parse(JSON.stringify(newVal))
-
     for (const key in newVal) {
       if (Object.hasOwnProperty.call(newVal, key)) {
         formData[key] = newVal[key]
@@ -200,7 +199,6 @@ const handleClose = () => {
   formData.pid = null
   formData.aid = null
   formData.tip = null
-  console.log(formData)
   emits('update:dialogVisible', false)
 }
 </script>

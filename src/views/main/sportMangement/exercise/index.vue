@@ -8,7 +8,7 @@
       </el-row>
       <el-row>
         <el-button type="primary" @click="getList" style="margin-left: 10px"
-          >搜素</el-button
+          >搜索</el-button
         >
       </el-row>
     </el-row>
@@ -30,7 +30,7 @@
         :width="item.width"
       >
         <template v-slot="{ row }" v-if="item.prop === 'action'">
-          <el-button @click="handleHuiBao(row)">查看处方</el-button>
+          <!-- <el-button @click="handleHuiBao(row)">查看处方</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -41,11 +41,20 @@
       @updateList="getList"
     />
   </el-card>
+  <sportUpdateDialog
+    v-model:dialogVisible="dialogVisible"
+    :patientId="patientId"
+    :editData="editData"
+    :role="role"
+    :docList="docList"
+    :dialogStatus="'update'"
+    :actionList="actionList"
+  />
 </template>
 
 <script setup>
 import Pagination from '@/components/pagination/index.vue'
-
+import sportUpdateDialog from './components/sportUpdateDialog.vue'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import {
@@ -57,6 +66,7 @@ import {
 } from '@/api/sportManagement/actionChuFang'
 import { getHeightWithOutHeader } from '@/utils/params/height'
 import { options, addDoctor } from './options'
+import { ElMessage } from 'element-plus'
 
 const cardHeight = getHeightWithOutHeader()
 
@@ -103,9 +113,13 @@ const getAcionList = async () => {
 const handleCurrentChange = () => {}
 
 // 处理单击汇查看处方
-const handleHuiBao = async (row) => {
-  const res = await getChuFangByIdForDoc({ pid: row.id })
-  console.log(res)
+const dialogVisible = ref(false)
+const patientId = ref(0)
+const editData = ref({})
+const handleHuiBao = (row) => {
+  patientId.value = row.pid
+  editData.value = row
+  dialogVisible.value = true
 }
 
 if (role === 'admin') {

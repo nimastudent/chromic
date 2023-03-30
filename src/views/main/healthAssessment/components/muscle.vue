@@ -5,7 +5,6 @@
     :rules="rules"
     label-position="left"
     label-width="130px"
-    size="medium"
     @submit.prevent
   >
     <el-row>
@@ -69,22 +68,21 @@
           <el-upload
             ref="uploadRef"
             name="all"
+            :file-list="uploadFileList"
             :action="uploadUrl"
             :data="formData"
-            list-type="picture-card"
-            show-file-list
             :limit="1"
             :auto-upload="false"
             :with-credentials="true"
             :on-success="handleSuccess"
           >
-            <template #default><i class="el-icon-plus"></i></template
-          ></el-upload>
+            <el-button type="primary">点我上传</el-button>
+          </el-upload>
         </el-form-item>
       </el-col>
     </el-row>
 
-    <el-button size="large" type="primary" @click="submitForm">提交</el-button>
+    <el-button size="mini" type="primary" @click="submitForm">提交</el-button>
   </el-form>
 </template>
 <script setup>
@@ -109,6 +107,7 @@ const uploadUrl = computed(() => {
   return `${baseUrl}/${props.activeUrl}/insert`
 })
 
+const uploadFileList = reactive([])
 const formData = reactive({
   left: '',
   right: '',
@@ -158,16 +157,29 @@ const state = reactive({
 const instance = getCurrentInstance()
 const uploadRef = ref()
 const submitForm = () => {
-  instance.ctx.$refs['vForm'].validate((valid) => {
-    if (!valid) return
-    formData.pid = props.pid
-    uploadRef.value.submit()
-    //TODO: 提交表单
-  })
+  const keys = Object.entries(formData)
+
+  for (let item of keys) {
+    if (!item[1]) {
+      ElMessage.warning('请填写完整表单！！')
+      return
+    }
+  }
+  formData.pid = props.pid
+  uploadRef.value.submit()
+  // instance.ctx.$refs['vForm'].validate((valid) => {
+  //   if (!valid) return
+  //   formData.pid = props.pid
+  //   uploadRef.value.submit()
+  //   //TODO: 提交表单
+  // })
 }
 
 const resetForm = () => {
-  instance.ctx.$refs['vForm'].resetFields()
+  const keys = Object.keys(formData)
+  keys.forEach((item) => {
+    formData[item] = ''
+  })
 }
 
 const handleSuccess = (res, uploadFile, uploadFiles) => {

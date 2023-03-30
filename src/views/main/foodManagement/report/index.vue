@@ -8,7 +8,7 @@
       </el-row>
       <el-row>
         <el-button type="primary" @click="getList" style="margin-left: 10px"
-          >搜素</el-button
+          >搜索</el-button
         >
       </el-row>
     </el-row>
@@ -45,6 +45,7 @@
     <report-detail
       ref="reportRef"
       v-model:detailDialogVisible="detailDialogVisible"
+      @updateList="getList"
     ></report-detail>
   </el-card>
 </template>
@@ -77,6 +78,8 @@ const tableData = ref([])
 const loading = ref(false)
 const getList = () => {
   loading.value = true
+  console.log('get')
+
   if (role === 'admin') {
     // addItem()
     getListForAdm()
@@ -125,7 +128,7 @@ const handleCheck = async (row) => {
   }
 }
 
-const handleDelete = () => {
+const handleDelete = (row) => {
   ElMessageBox.confirm('请确认是否删除该条记录', '警告', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',

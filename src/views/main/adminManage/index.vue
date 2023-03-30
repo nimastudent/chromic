@@ -152,7 +152,9 @@ const handleDeleteDoc = (row) => {
 
 const logDialogVisible = ref(false)
 //  处理单击 查看日志
-const handleCheckLog = () => {}
+const handleCheckLog = () => {
+  logDialogVisible.value = true
+}
 </script>
 
 <style lang="scss" scoped>

@@ -133,14 +133,18 @@ const getList = async () => {
   loading.value = true
   if (role === 'staff') {
     const res = await getNoticeByAdmin(queryForm)
-    tableData.value = res.body.content
-    total.value = res.body.totalSize
+    tableData.value = res.body
+    total.value = res.body.length
+
     loading.value = false
   } else if (role === 'admin') {
     const res = await getNoticeByUser(queryForm)
-    tableData.value = res.body.content
+    tableData.value = res.body
+    total.value = res.body.length
+
     loading.value = false
   }
+  console.log(tableData.value)
 }
 
 // 修改表格信息

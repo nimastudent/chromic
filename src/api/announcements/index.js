@@ -10,11 +10,11 @@ export function getNoticeByAdmin(data) {
 }
 
 // 用户获取公告
-export function getNoticeByUser(data) {
+export function getNoticeByUser(params) {
   return request({
     url: '/notice/allforUser',
-    method: 'post',
-    data
+    method: 'get',
+    params
   })
 }
 

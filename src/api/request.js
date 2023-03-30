@@ -33,19 +33,13 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data
     return res
-    // if (res.code === 200) {
-    //   // console.log(res);
-    //   return res
-    // } else {
-    //   ElMessage({
-    //     message: res.body,
-    //     type: 'error',
-    //     duration: 3 * 1000
-    //   })
-    //   return Promise.reject(res)
-    // }
   },
   (error) => {
+    ElMessage({
+      message: '服务器出错，请联系维护人员！',
+      type: 'error',
+      duration: 3 * 1000
+    })
     console.log(error)
     return Promise.reject(error)
   }

@@ -26,12 +26,9 @@ import healthAssessment from './modules/healthAssessment'
 // import interactive from './modules/interactive'
 import ruleManagement from './modules/ruleManage'
 import announcements from './modules/announcements'
+import { reactive } from 'vue'
 
-let modules = [...System]
-
-// const routes = modules
-
-let routes = [
+let modules = reactive([
   ...System,
   ...Dashboard,
   ...patientManagement,
@@ -42,8 +39,9 @@ let routes = [
   ...announcements,
   ...ruleManagement,
   ...adminManage,
-  ...healthAssessment
-]
+
+])
+
 
 const router = createRouter({
   history: createWebHashHistory(),

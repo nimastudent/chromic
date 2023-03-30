@@ -16,8 +16,12 @@ export let options = [
     width: 1
   },
   {
-    label: '已开指导',
-    prop: 'isDrug'
+    label: '汇报时间',
+    prop: 'reportDate'
+  },
+  {
+    label: '是否完成',
+    prop: 'isFinish'
   },
   {
     label: '操作',
@@ -26,5 +30,11 @@ export let options = [
 ]
 
 export function addItem() {
-  options.splice(3, 1, { label: '所属医生', prop: 'doctorName' })
+
+  const hasDoc = options.find(item => item.label === '所属医生')
+  
+  if(!hasDoc){
+  options.splice(3, 1, { label: '所属医生', prop: 'doctorName' , width: 90})
+
+  }
 }

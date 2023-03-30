@@ -2,8 +2,24 @@
   <el-card :body-style="{ padding: '5px 10px' }">
     <el-row :gutter="24" style="margin: 3px 0">
       <el-row :span="4">
+        <el-input v-model="queryForm.word"></el-input>
+      </el-row>
+      <el-row :span="4">
+        <el-button
+          icon="el-icon-search"
+          type="primary"
+          plain
+          @click="getList"
+          v-debounce
+          >搜索</el-button
+        >
+        <el-button type="default" @click="handleReset" v-debounce
+          >重置</el-button
+        >
         <el-button type="primary" @click="hadnleAdd">添加用户</el-button>
       </el-row>
+
+      <el-row :span="4"> </el-row>
     </el-row>
     <el-table
       v-loading="loading"
@@ -22,35 +38,44 @@
         :key="index"
         :width="item.width"
       >
-        <template v-slot="{ row }" v-if="item.prop === 'action'">
-          <el-row :gutter="20">
-            <el-col :span="7">
-              <el-button @click="goHealthAssessment(row)" type="primary"
-                >健康测评</el-button
-              >
-            </el-col>
-            <el-col :span="7">
-              <el-button @click="handleDisease(row)">疾病汇报</el-button>
-            </el-col>
-            <el-col :span="4">
-              <el-button @click="handleSport(row)">运动数据</el-button>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" class="second-row">
-            <el-col :span="7">
-              <el-button @click="handleClickeDayReport(row)" v-debounce
-                >每日数据</el-button
-              >
-            </el-col>
-            <el-col :span="7">
-              <el-button @click="handleEdit(row)">编辑信息</el-button>
-            </el-col>
-            <el-col :span="6">
-              <el-button type="danger" @click="handleDelete(row)"
-                >删除</el-button
-              >
-            </el-col>
-          </el-row>
+        <template
+          v-slot="{ row }"
+          v-if="item.prop === 'action' || item.prop === 'step'"
+        >
+          <div v-if="item.prop === 'action'">
+            <el-row :gutter="20">
+              <el-col :span="7">
+                <el-button @click="goHealthAssessment(row)" type="primary"
+                  >健康测评</el-button
+                >
+              </el-col>
+              <el-col :span="7">
+                <el-button @click="handleDisease(row)">疾病汇报</el-button>
+              </el-col>
+              <el-col :span="4">
+                <el-button @click="handleSport(row)">运动数据</el-button>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="second-row">
+              <el-col :span="7">
+                <el-button @click="handleClickeDayReport(row)" v-debounce
+                  >每日数据</el-button
+                >
+              </el-col>
+              <el-col :span="7">
+                <el-button @click="handleEdit(row)">编辑信息</el-button>
+              </el-col>
+              <el-col :span="6">
+                <el-button type="danger" @click="handleDelete(row)"
+                  >删除</el-button
+                >
+              </el-col>
+            </el-row>
+          </div>
+
+          <div class="step" v-else>
+            <span @click="handleClickStep(row)">{{ row.step }}</span>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -67,7 +92,7 @@
     ref="editDialog"
     v-model:dialogVisible="dialogVisible"
     :orgList="orgList"
-    :role="role"
+    :role="'admin'"
     :dialogStatus="dialogStatus"
     :docList="docList"
     @updateList="getList"
@@ -91,6 +116,11 @@
     :patientId="patientId"
     :docList="docList"
   />
+
+  <step-dialog
+    v-model:userStepDialogVisible="stepDialogVisible"
+    :patientId="patientId"
+  />
 </template>
 <script setup>
 import sportDialog from './components/sportDialog.vue'
@@ -98,6 +128,7 @@ import dieaseRecordDialog from './components/dieaseRecordDialog.vue'
 import dayReportDialog from './components/dayReportDialog.vue'
 import Dialog from './components/Dialog.vue'
 import Pagination from '@/components/pagination/index.vue'
+import stepDialog from './components/stepDialog.vue'
 import {
   getAllPaientBystaff,
   getAllPaientByAdmin,
@@ -105,10 +136,10 @@ import {
   getMecIDName,
   getDocList,
   getDayXueYaReport,
-  getDayXueTangReport
+  getDayXueTangReport,
+  getDayXinLvReport,
+  getUseStep
 } from '@/api/patientManagement/index'
-
-import { getDiseaseById } from '@/api/diseaseManagement/index'
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { options, roleAddDoc } from './options'
@@ -123,7 +154,8 @@ const role = store.state.user.role
 const loading = ref(false)
 const queryForm = reactive({
   pageNum: 1,
-  pageSize: 10
+  pageSize: 10,
+  word: ''
 })
 // Dialog ref
 const editDialog = ref(null)
@@ -151,7 +183,6 @@ const getList = async () => {
     // 医生获取
     const res = await getAllPaientBystaff(queryForm)
     if (res.success) {
-      console.log(res)
       loading.value = false
       tableData.value = res.body.content
       total.value = res.body.totalSize
@@ -160,7 +191,6 @@ const getList = async () => {
     // 管理员获取
     const res = await getAllPaientByAdmin(queryForm)
     if (res.success) {
-      console.log(res)
       loading.value = false
       tableData.value = res.body.content
       total.value = res.body.totalSize
@@ -183,7 +213,6 @@ const getAllDocList = async () => {
   const res = await getDocList()
   if (res.success) {
     docList.value = res.body
-    console.log(res)
   }
 }
 
@@ -223,9 +252,15 @@ const handleClickeDayReport = (row) => {
     const xueYaList = res.body
     getDayXueTangReport({ pid: row.id }).then((res) => {
       const xueTangList = res.body
-      dayReportList.value.xueYa = xueYaList
-      dayReportList.value.xueTang = xueTangList
-      dayReportDialogVisible.value = true
+      getDayXinLvReport({ pid: row.id }).then((res) => {
+        const xinLvList = res.body
+
+        dayReportList.value.xueYa = xueYaList
+        dayReportList.value.xueTang = xueTangList
+        dayReportList.value.xinLv = xinLvList
+
+        dayReportDialogVisible.value = true
+      })
 
       console.log(dayReportList)
     })
@@ -273,21 +308,56 @@ const handleDelete = (row) => {
     })
 }
 
+const stepDialogVisible = ref(false)
+//查看用户步数
+const handleClickStep = (row) => {
+  const pid = row.id
+  patientId.value = pid
+  stepDialogVisible.value = true
+}
+
+// 重置
+const handleReset = () => {
+  if (!queryForm.word) {
+    ElMessage.warning('已重置')
+  } else {
+    queryForm.word = ''
+    getList()
+  }
+}
+
 // 初始化调用的函数
 if (role === 'admin') {
   roleAddDoc()
-  getAllDocList()
 }
-// ________________admin_________________
-getAllDocList()
-// ________________admin_________________
 
 getList()
 getOrgList()
+getAllDocList()
 </script>
 
 <style lang="scss" scoped>
 .second-row {
   margin-top: 3px;
+}
+
+.step {
+  color: #303133;
+  cursor: pointer;
+  width: 200px;
+
+  &:hover {
+    color: #409eff;
+    text-decoration: underline;
+  }
+
+  &:hover::after {
+    content: '点我查看用户步数';
+    position: fixed;
+    color: gray;
+    background-color: #fff;
+    border-radius: 4px;
+    z-index: 999;
+  }
 }
 </style>

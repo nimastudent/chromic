@@ -48,30 +48,24 @@
         :width="item.width"
       >
         <template v-slot="{ row }" v-if="item.prop === 'action'">
-          <el-row :gutter="24">
-            <el-col :span="8">
-              <el-upload
-                :action="uploadUrl"
-                :limit="1"
-                :data="{ id: row.id }"
-                name="picture"
-                :with-credentials="true"
-                :on-success="handleSuccess"
+          <div class="row-action">
+            <el-upload
+              :action="uploadUrl"
+              :limit="1"
+              :data="{ id: row.id }"
+              name="picture"
+              :with-credentials="true"
+              :on-success="handleSuccess"
+            >
+              <el-button type="primary" style="margin-left: 20px"
+                >设置背景图片</el-button
               >
-                <el-button type="primary" style="margin-left: 20px"
-                  >设置背景图片</el-button
-                >
-              </el-upload>
-            </el-col>
-            <el-col :span="8">
-              <el-button @click="handleSelect(row)">查看详细</el-button>
-            </el-col>
-            <el-col :span="8">
-              <el-button type="danger" @click="handleDelete(row.id)"
-                >删除</el-button
-              >
-            </el-col>
-          </el-row>
+            </el-upload>
+            <el-button @click="handleSelect(row)">查看详细</el-button>
+            <el-button type="danger" @click="handleDelete(row.id)"
+              >删除</el-button
+            >
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -219,5 +213,12 @@ getAllActionTypeList()
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.row-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 </style>

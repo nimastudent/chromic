@@ -10,7 +10,7 @@
       </el-row>
       <el-row>
         <el-button type="primary" @click="getList" style="margin-left: 10px"
-          >搜素</el-button
+          >搜索</el-button
         >
       </el-row>
     </el-row>
@@ -35,7 +35,7 @@
           <el-button @click="handelEdit(row)">编辑</el-button>
           <el-button @click="handleDelete(row)" type="danger"> 删除</el-button>
         </template>
-        <template v-else-if="item.prop === 'isDrug'" v-slot="{ row }">
+        <template v-else-if="item.prop === 'isFinish'" v-slot="{ row }">
           <!-- <el-button @click="handelEdit(row)">编辑</el-button> -->
           <span v-if="row.isDrug">是</span>
           <span v-else>否</span>
